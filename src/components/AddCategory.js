@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Alert, Button, Col, Form, Input, Row, Select} from "antd";
 import axios from "axios";
-import reducer from './reducers/Reducer';
+import reducer from '../reducers/Reducer';
 import {createStore} from 'redux'
 
 const ADD_CATEGORIES_URL = 'http://localhost:3000/categories';
