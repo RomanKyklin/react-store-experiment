@@ -1,7 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Col, Divider, Row, Table, Tag, Spin} from "antd";
-
-import axios from 'axios';
+import store from '../store/store';
+import {fetchProducts} from "../actions";
+import {connect} from "react-redux";
+import PropTypes from 'prop-types';
 
 var _ = require('lodash');
 
@@ -34,36 +36,10 @@ const columns = [
     },
 ];
 
-const GET_PRODUCTS_URL = 'http://localhost:3000/products';
-
-export default () => {
-    const [{
-        products,
-        isError,
-        isLoading
-    }, setState] = useState({
-        products: [],
-        isError: false,
-        isLoading: true
-    });
-
+const Product = ({products, isError, isLoading}) => {
     useEffect(() => {
-        axios.get(GET_PRODUCTS_URL)
-            .then(response => {
-                const products = _.get(response, 'data', []);
-
-                if (!_.isArray(products)) {
-                    setState(currentState => ({...currentState, isError: true, isLoading: false}));
-                    return;
-                }
-                setState(currentState => ({...currentState, products, isLoading: false}));
-            })
-            .catch(error => {
-                // handle error
-                console.log(error);
-                setState(currentState => ({...currentState, isError: true, isLoading: false}));
-            });
-    });
+        store.dispatch(fetchProducts()).then(() => console.log(store.getState()));
+    }, []);
 
 
     if (isLoading) {
@@ -83,4 +59,21 @@ export default () => {
             </Col>
         </Row>
     )
-}
+};
+
+Product.propTypes = {
+    products: PropTypes.array.isRequired,
+    isError: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired
+};
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        products: state.products,
+        isError: state.isError,
+        isLoading: state.isLoading
+    }
+};
+
+export default connect(mapStateToProps)(Product);
+
