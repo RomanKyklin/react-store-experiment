@@ -1,11 +1,10 @@
 import React, {useEffect} from 'react';
-import {Col, Divider, Row, Table, Tag, Spin} from "antd";
+import {Col, Divider, Row, Table, Spin, Layout} from "antd";
 import store from '../store/store';
 import {fetchProducts} from "../actions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
-
-var _ = require('lodash');
+import ChangeProductModal from "./ChangeProductModal";
 
 const columns = [
     {
@@ -24,11 +23,16 @@ const columns = [
         key: 'selling_price',
     },
     {
+        title: 'Category',
+        dataIndex: 'category.title',
+        key: 'category.title',
+    },
+    {
         title: 'Action',
         key: 'action',
         render: (text, record) => (
             <span>
-        <a href="javascript:;">Change</a>
+         <ChangeProductModal/>
         <Divider type="vertical"/>
         <a href="javascript:;">Delete</a>
       </span>
@@ -36,11 +40,18 @@ const columns = [
     },
 ];
 
-const Product = ({products, isError, isLoading}) => {
+const Product = ({products, isError, isLoading, filteredCategoryId}) => {
     useEffect(() => {
-        store.dispatch(fetchProducts()).then(() => console.log(store.getState()));
-    }, []);
+        store.dispatch(fetchProducts());
+    }, [filteredCategoryId]);
 
+    const filterProduct = () => {
+        products = products.filter(val => val.category._id === filteredCategoryId);
+    };
+
+    if(filteredCategoryId) {
+        filterProduct();
+    }
 
     if (isLoading) {
         return (
@@ -64,14 +75,16 @@ const Product = ({products, isError, isLoading}) => {
 Product.propTypes = {
     products: PropTypes.array.isRequired,
     isError: PropTypes.bool.isRequired,
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool.isRequired,
+    filteredCategoryId: PropTypes.string
 };
 
 const mapStateToProps = (state, ownProps) => {
     return {
         products: state.products,
         isError: state.isError,
-        isLoading: state.isLoading
+        isLoading: state.isLoading,
+        filteredCategoryId: state.filteredCategoryId
     }
 };
 

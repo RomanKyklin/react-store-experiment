@@ -1,16 +1,13 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 import {Form, Input, Button, Col, Row, Select, Alert} from 'antd';
 import PropTypes from 'prop-types';
 import axios from "axios";
 import store from '../store/store';
 import {fetchCategories, setCategoryId, setError, setPurchasePrice, setSellingPrice, setTitle} from "../actions";
 import {connect} from "react-redux";
+import {CREATE_PRODUCTS_URL, HOME_URL} from '../constants/app-contants'
 
 const {Option} = Select;
-var _ = require('lodash');
-
-const CREATE_PRODUCTS_URL = 'http://localhost:3000/products';
-const HOME_URL = 'http://localhost:3001/';
 
 const AddProduct = ({
                         categories,
@@ -24,7 +21,7 @@ const AddProduct = ({
                     }) => {
 
     useEffect(() => {
-        store.dispatch(fetchCategories()).then(() => console.log(store.getState()));
+        store.dispatch(fetchCategories());
     }, []);
 
     const handleForm = (event) => {
@@ -58,7 +55,7 @@ const AddProduct = ({
     const createProduct = () => {
         console.log(title + "   " + sellingPrice + "  " + purchasePrice + "  " + categoryId);
         axios.post(CREATE_PRODUCTS_URL, {
-            title, selling_price: sellingPrice, purchase_price: purchasePrice, category: categoryId
+            title, sellingPrice, purchasePrice, category: categoryId
         })
             .then(response => {
                 window.location.href = HOME_URL;

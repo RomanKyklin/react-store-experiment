@@ -1,19 +1,13 @@
-import React, {useState, useEffect} from "react";
-import {Alert, Button, Col, Form, Input, Row, Select} from "antd";
+import React from "react";
+import {Alert, Button, Col, Form, Input, Row} from "antd";
 import axios from "axios";
-import reducer from '../reducers/Reducer';
-import {createStore} from 'redux'
+import {HOME_URL, ADD_CATEGORIES_URL} from "../constants/app-contants";
+import {setError, setTitle} from "../actions";
+import {connect, useDispatch} from "react-redux";
+import PropTypes from 'prop-types';
 
-const ADD_CATEGORIES_URL = 'http://localhost:3000/categories';
-const HOME_URL = 'http://localhost:3001/';
-
-export default () => {
-    const [{
-        isError,
-        isLoading,
-        errorMessage,
-        title
-    }, setState] = useState({isError: false, isLoading: true, errorMessage: '', title: ''});
+const AddCategory = ({title, isError}) => {
+    const dispatch = useDispatch();
 
     const handleForm = (event) => {
         event.preventDefault();
@@ -21,7 +15,7 @@ export default () => {
     };
 
     const handleChangeTitle = (event) => {
-        setState(currentState => ({...currentState, title: event.target.value}));
+        dispatch(setTitle(event.target.value));
     };
 
     const createCategory = () => {
@@ -31,11 +25,7 @@ export default () => {
             })
             .catch(error => {
                 console.log(error);
-                setState(currentState => ({
-                    ...currentState,
-                    isError: true,
-                    errorMessage: 'Произошла ошибка, попробуйте перезагрузить страницу или интернет'
-                }));
+                dispatch(setError(true, ''));
             })
     };
 
@@ -63,4 +53,18 @@ export default () => {
             </Col>
         </Row>
     )
-}
+};
+
+AddCategory.propTypes = {
+  title: PropTypes.string,
+  isError: PropTypes.bool.isRequired
+};
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        title: state.title,
+        isError: state.isError,
+    }
+};
+
+export default connect(mapStateToProps)(AddCategory);

@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import {Layout, Menu, Row, Col, Button} from 'antd';
+import {Layout, Menu} from 'antd';
 import AppRouter from "./router/AppRouter";
 import {Provider} from "react-redux";
 import store from './store/store';
 
-const {Header, Content} = Layout;
+const {Header} = Layout;
 
 export default () => {
     return (

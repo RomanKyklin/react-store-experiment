@@ -1,109 +1,80 @@
 import {
     SET_CATEGORY, SET_CATEGORY_ID,
-    SET_ERROR,
+    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_LOADING,
     SET_PRODUCTS,
     SET_PURCHASE_PRICE,
     SET_SELLING_PRICE,
-    SET_TITLE
+    SET_TITLE, SET_VISIBLE
 } from "../constants/action-types";
 import axios from "axios";
+import _ from "lodash";
+import {GET_CATEGORIES_URL, GET_PRODUCTS_URL} from "../constants/app-contants";
 
-var _ = require('lodash');
-
-const GET_CATEGORIES_URL = 'http://localhost:3000/categories';
-const GET_PRODUCTS_URL = 'http://localhost:3000/products';
-
-export const setCategory = (categories) => {
-    return {
-        type: SET_CATEGORY,
-        categories,
-        isLoading: false
-    }
+const makeActionCreator = (type, ...argNames) => (...args) => {
+    const action = {type};
+    argNames.forEach((arg, index) => {
+        action[argNames[index]] = args[index]
+    });
+    return action
 };
 
-export const setProducts = (products) => {
-    return {
-        type: SET_PRODUCTS,
-        products,
-        isLoading: false
-    }
-};
+export const setCategory = makeActionCreator(SET_CATEGORY, 'categories');
 
-export const setError = (isError, errorMessage = '') => {
-    return {
-        type: SET_ERROR,
-        isError,
-        isLoading: false,
-        errorMessage
-    }
-};
+export const setProducts = makeActionCreator(SET_PRODUCTS, 'products');
 
-export const setTitle = (title) => {
-    return {
-        type: SET_TITLE,
-        isLoading: false,
-        title
-    }
-};
+export const setError = makeActionCreator(SET_ERROR, 'isError', 'errorMessage');
 
-export const setSellingPrice = (sellingPrice) => {
-    return {
-        type: SET_SELLING_PRICE,
-        isLoading: false,
-        sellingPrice
-    }
-};
+export const setTitle = makeActionCreator(SET_TITLE, 'title');
 
-export const setPurchasePrice = (purchasePrice) => {
-    return {
-        type: SET_PURCHASE_PRICE,
-        purchasePrice,
-        isLoading: false,
-    }
-};
+export const setSellingPrice = makeActionCreator(SET_SELLING_PRICE, 'sellingPrice');
 
-export const setCategoryId = (categoryId) => {
-  return {
-      type: SET_CATEGORY_ID,
-      categoryId,
-      isLoading: false
-  }
-};
+export const setPurchasePrice = makeActionCreator(SET_PURCHASE_PRICE, 'purchasePrice');
 
-export const fetchCategories = () => {
-    return (dispatch) => {
-        return axios.get(GET_CATEGORIES_URL)
-            .then(response => {
-                const categories = _.get(response, 'data', []);
+export const setCategoryId = makeActionCreator(SET_CATEGORY_ID, 'categoryId');
 
-                if (!_.isArray(categories)) {
-                    dispatch(setError(true));
-                    return;
-                }
-                dispatch(setCategory(categories));
-            })
-            .catch(error => {
+export const setLoading = makeActionCreator(SET_LOADING, 'isLoading');
+
+export const setFilteredCategoryId = makeActionCreator(SET_FILTERED_CATEGORY_ID, 'filteredCategoryId');
+
+export const setVisible = makeActionCreator(SET_VISIBLE, 'visible');
+
+export const fetchCategories = () => dispatch => {
+    dispatch(setLoading(true));
+
+    return axios.get(GET_CATEGORIES_URL)
+        .then(response => {
+            const categories = _.get(response, 'data', []);
+
+            if (!_.isArray(categories)) {
                 dispatch(setError(true));
-            });
-    }
+                return;
+            }
+            dispatch(setCategory(categories));
+        })
+        .then(() => dispatch(setLoading(false)))
+        .catch(error => {
+            console.log(error);
+            dispatch(setError(true, 'Произошла ошибка, попробуйте перезагрузить интернет или перезагрузить страницу'));
+        });
 };
 
-export const fetchProducts = () => {
-    return (dispatch) => {
-        return axios.get(GET_PRODUCTS_URL)
-            .then(response => {
-                const products = _.get(response, 'data', []);
+export const fetchProducts = () => dispatch => {
+    dispatch(setLoading(true));
 
-                if (!_.isArray(products)) {
-                    dispatch(setError(true));
-                    return;
-                }
-                dispatch(setProducts(products));
-            })
-            .catch(error => {
-                // handle error
-                console.log(error);
+    return axios.get(GET_PRODUCTS_URL)
+        .then(response => {
+            const products = _.get(response, 'data', []);
+
+            if (!_.isArray(products)) {
                 dispatch(setError(true));
-            });
-    }
+                return;
+            }
+            dispatch(setProducts(products));
+        })
+        .then(() => dispatch(setLoading(false)))
+        .catch(error => {
+            // handle error
+            console.log(error);
+            dispatch(setError(true));
+        });
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom"
+import { BrowserRouter as Router, Route } from "react-router-dom"
 import AddProduct from "../components/AddProduct";
 import Home from "../components/Home";
 import AddCategory from "../components/AddCategory";

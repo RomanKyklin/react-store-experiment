@@ -2,20 +2,18 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Menu} from "antd";
 import Sider from "antd/es/layout/Sider";
-import store from '../store/store';
-import {fetchCategories} from "../actions";
-import {connect} from "react-redux";
-
-var _ = require('lodash');
+import {fetchCategories, setFilteredCategoryId, setLoading} from "../actions";
+import {connect, useDispatch} from "react-redux";
 
 const Category = ({categories, isError, isLoading}) => {
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        store.dispatch(fetchCategories());
+        dispatch(fetchCategories());
     }, []);
 
     const handleClick = (id) => {
-        console.log(id);
+        dispatch(setFilteredCategoryId(id));
     };
 
     return (
@@ -39,18 +37,18 @@ const Category = ({categories, isError, isLoading}) => {
 
 Category.propTypes = {
     categories: PropTypes.array.isRequired,
-    isError: PropTypes.bool.isRequired,
-    isLoading: PropTypes.bool.isRequired
+    isError: PropTypes.bool,
+    isLoading: PropTypes.bool,
 };
 
 const mapStateToProps = (state, ownProps) => {
     return {
         categories: state.categories,
         isError: state.isError,
-        isLoading: state.isLoading
+        isLoading: state.isLoading,
     }
 };
 
-export default connect(mapStateToProps)(Category)
+export default connect(mapStateToProps)(Category);
 
 

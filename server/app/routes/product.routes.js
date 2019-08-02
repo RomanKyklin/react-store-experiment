@@ -3,4 +3,5 @@ module.exports = (app) => {
 
     app.get('/products', product.findAll);
     app.post('/products', product.create);
+    app.put('/products', product.change);
 };
