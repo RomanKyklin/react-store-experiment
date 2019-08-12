@@ -1,6 +1,35 @@
 const Product = require('../models/product.model.js');
 const Category = require('../models/category.model');
 
+exports.find = (req, res) => {
+    if (!req.query.id) {
+        return res.status(400).send({
+            message: "Product id can not be empty"
+        });
+    }
+
+    Product.findById(req.query.id)
+        .populate('category')
+        .then(product => {
+            if (!product) {
+                return res.status(400).send({
+                    message: "Product not found!"
+                });
+            }
+            res.send(product);
+        })
+        .catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Product not found with id " + req.params.id
+                });
+            }
+            return res.status(500).send({
+                message: "Error finding product with id " + req.params.id
+            });
+        })
+};
+
 exports.findAll = (req, res) => {
     Product.find()
         .populate('category')
@@ -68,4 +97,36 @@ exports.change = (req, res) => {
             });
         })
 
+};
+
+exports.delete = (req, res) => {
+    if (!req.body.id) {
+        return res.status(400).send({
+            message: "Product id can not be empty"
+        });
+    }
+
+    Product.findByIdAndDelete(req.body.id)
+        .then(product => {
+            if(!product) {
+                return res.status(404).send({
+                    message: "Product not found with id " + req.params.id
+                });
+            }
+
+            res.status(200).send({
+                message: "product removed successfully with id " + req.body.id
+            })
+        }
+        )
+        .catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Product not found with id " + req.params.id
+                });
+            }
+            return res.status(500).send({
+                message: "Error deleting product with id " + req.params.id
+            });
+        })
 };

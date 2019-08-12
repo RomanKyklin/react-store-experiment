@@ -3,4 +3,5 @@ module.exports = (app) => {
 
     app.get('/categories', category.findAll);
     app.post('/categories', category.create);
+    app.delete('/category', category.delete);
 };
