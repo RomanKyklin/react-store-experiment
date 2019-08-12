@@ -1,10 +1,13 @@
 import React, {useEffect} from 'react';
 import {Col, Divider, Row, Table, Spin, Layout} from "antd";
 import store from '../store/store';
-import {fetchProducts} from "../actions";
+import {fetchProducts, setError, setLoading} from "../actions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import ChangeProductModal from "./ChangeProductModal";
+import Button from "antd/es/button";
+import axios from 'axios';
+import {GET_OR_DELETE_PRODUCT_URL, HOME_URL} from "../constants/app-contants";
 
 const columns = [
     {
@@ -30,15 +33,34 @@ const columns = [
     {
         title: 'Action',
         key: 'action',
-        render: (text, record) => (
-            <span>
-         <ChangeProductModal/>
-        <Divider type="vertical"/>
-        <a href="javascript:;">Delete</a>
+        render: (text, record, i) => {
+            return (
+                <span>
+         <ChangeProductModal id={text._id}/>
+         <Button type="danger" onClick={() => handleDelete(text._id, text.title)}> Delete </Button>
       </span>
-        ),
+            )
+        },
     },
 ];
+
+const handleDelete = (id, title) => {
+    const conf = window.confirm(`Вы действительно хотите удалить продукт с названием - '${title}' ?`);
+
+    if(conf) {
+        store.dispatch(setLoading(true));
+        axios.delete(GET_OR_DELETE_PRODUCT_URL, {data: {id}})
+            .then(response => {
+                store.dispatch(setLoading(false));
+                window.location.href = HOME_URL;
+            })
+            .catch(err => {
+                console.log(err);
+                store.dispatch(setLoading(false));
+                store.dispatch(setError(true, ''));
+            })
+    }
+};
 
 const Product = ({products, isError, isLoading, filteredCategoryId}) => {
     useEffect(() => {
@@ -46,10 +68,10 @@ const Product = ({products, isError, isLoading, filteredCategoryId}) => {
     }, [filteredCategoryId]);
 
     const filterProduct = () => {
-        products = products.filter(val => val.category._id === filteredCategoryId);
+        products = products.filter(val => val.category ? val.category._id === filteredCategoryId : false);
     };
 
-    if(filteredCategoryId) {
+    if (filteredCategoryId) {
         filterProduct();
     }
 

@@ -5,8 +5,9 @@ import {HOME_URL, ADD_CATEGORIES_URL} from "../constants/app-contants";
 import {setError, setTitle} from "../actions";
 import {connect, useDispatch} from "react-redux";
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
-const AddCategory = ({title, isError}) => {
+const AddCategory = ({title, isError, errorMessage}) => {
     const dispatch = useDispatch();
 
     const handleForm = (event) => {
@@ -15,7 +16,9 @@ const AddCategory = ({title, isError}) => {
     };
 
     const handleChangeTitle = (event) => {
-        dispatch(setTitle(event.target.value));
+        let title = _.get(event, 'target.value', '');
+
+        dispatch(setTitle(title));
     };
 
     const createCategory = () => {
@@ -25,17 +28,22 @@ const AddCategory = ({title, isError}) => {
             })
             .catch(error => {
                 console.log(error);
-                dispatch(setError(true, ''));
+                dispatch(setError(true, 'Произошла ошибка. Поля заполнены неккоректно, либо попробуйте перезагрузить страницу или интернет.'));
             })
     };
 
+    if (isError) {
+        return (
+            <Row type="flex" justify="center">
+                <Col span={13} style={{textAlign: 'center'}}>
+                    <Alert message={errorMessage} type="error"/>
+                </Col>
+            </Row>
+        )
+    }
+
     return (
         <Row type="flex" justify="center">
-            {
-                isError ? <Col span={13} style={{textAlign: 'center'}}>
-                    <Alert message="Произошла ошибка" type="error"/>
-                </Col> : ''
-            }
             <Col style={{textAlign: "center"}} span={13}>
                 <Form className="create-product-form" onSubmit={handleForm}>
                     <Form.Item>
@@ -56,14 +64,16 @@ const AddCategory = ({title, isError}) => {
 };
 
 AddCategory.propTypes = {
-  title: PropTypes.string,
-  isError: PropTypes.bool.isRequired
+    title: PropTypes.string,
+    isError: PropTypes.bool.isRequired,
+    errorMessage: PropTypes.string
 };
 
 const mapStateToProps = (state, ownProps) => {
     return {
         title: state.title,
         isError: state.isError,
+        errorMessage: state.errorMessage
     }
 };
 

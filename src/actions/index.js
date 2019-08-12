@@ -1,6 +1,6 @@
 import {
     SET_CATEGORY, SET_CATEGORY_ID,
-    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_LOADING,
+    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_LOADING, SET_PRODUCT, SET_PRODUCT_ID_TO_CHANGE,
     SET_PRODUCTS,
     SET_PURCHASE_PRICE,
     SET_SELLING_PRICE,
@@ -8,7 +8,7 @@ import {
 } from "../constants/action-types";
 import axios from "axios";
 import _ from "lodash";
-import {GET_CATEGORIES_URL, GET_PRODUCTS_URL} from "../constants/app-contants";
+import {GET_CATEGORIES_URL, GET_OR_DELETE_PRODUCT_URL, GET_PRODUCTS_URL} from "../constants/app-contants";
 
 const makeActionCreator = (type, ...argNames) => (...args) => {
     const action = {type};
@@ -37,6 +37,10 @@ export const setLoading = makeActionCreator(SET_LOADING, 'isLoading');
 export const setFilteredCategoryId = makeActionCreator(SET_FILTERED_CATEGORY_ID, 'filteredCategoryId');
 
 export const setVisible = makeActionCreator(SET_VISIBLE, 'visible');
+
+export const setProduct = makeActionCreator(SET_PRODUCT, 'product');
+
+export const setProductIdToChange = makeActionCreator(SET_PRODUCT_ID_TO_CHANGE, 'productIdToChange');
 
 export const fetchCategories = () => dispatch => {
     dispatch(setLoading(true));

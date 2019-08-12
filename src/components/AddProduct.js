@@ -5,7 +5,7 @@ import axios from "axios";
 import store from '../store/store';
 import {fetchCategories, setCategoryId, setError, setPurchasePrice, setSellingPrice, setTitle} from "../actions";
 import {connect} from "react-redux";
-import {CREATE_PRODUCTS_URL, HOME_URL} from '../constants/app-contants'
+import {GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL, HOME_URL} from '../constants/app-contants'
 
 const {Option} = Select;
 
@@ -29,6 +29,7 @@ const AddProduct = ({
         if (title.trim().length === 0 || sellingPrice.trim().length === 0 || purchasePrice.trim().length === 0
             || categoryId.trim().length === 0) {
             store.dispatch(setError(true, 'Поля заполнены некорректно.'));
+            return;
         }
         createProduct();
     };
@@ -53,8 +54,7 @@ const AddProduct = ({
     };
 
     const createProduct = () => {
-        console.log(title + "   " + sellingPrice + "  " + purchasePrice + "  " + categoryId);
-        axios.post(CREATE_PRODUCTS_URL, {
+        axios.post(GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL, {
             title, sellingPrice, purchasePrice, category: categoryId
         })
             .then(response => {

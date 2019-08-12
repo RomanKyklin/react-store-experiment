@@ -1,6 +1,6 @@
 import {
     SET_CATEGORY, SET_CATEGORY_ID,
-    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_LOADING,
+    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_LOADING, SET_PRODUCT, SET_PRODUCT_ID_TO_CHANGE,
     SET_PRODUCTS,
     SET_PURCHASE_PRICE,
     SET_SELLING_PRICE,
@@ -18,7 +18,9 @@ const initialState = {
     purchasePrice: '',
     categoryId: '',
     filteredCategoryId: '',
-    visible: false
+    visible: false,
+    product: {},
+    productIdToChange: ''
 };
 
 const reducer = (state = initialState, action) => {
@@ -53,6 +55,12 @@ const reducer = (state = initialState, action) => {
             break;
         case SET_VISIBLE:
             state.visible = action.visible;
+            break;
+        case SET_PRODUCT:
+            state.product = action.product;
+            break;
+        case SET_PRODUCT_ID_TO_CHANGE:
+            state.productIdToChange = action.productIdToChange;
             break;
         default:
             return state;
