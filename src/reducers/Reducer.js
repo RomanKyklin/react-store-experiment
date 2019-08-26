@@ -26,46 +26,71 @@ const initialState = {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_CATEGORY:
-            state.categories = action.categories;
-            break;
+            return {
+                ...state,
+                categories: action.categories
+            };
         case SET_PRODUCTS:
-            state.products = action.products;
-            break;
+            return {
+                ...state,
+                products: action.products
+            };
         case SET_ERROR:
-            state.isError = action.isError;
-            state.errorMessage = action.errorMessage;
-            break;
+            return {
+                ...state,
+                isError: action.isError,
+                errorMessage: action.errorMessage
+            };
         case SET_TITLE:
-            state.title = action.title;
-            break;
+            return {
+                ...state,
+                title: action.title
+            };
         case SET_SELLING_PRICE:
-            state.sellingPrice = action.sellingPrice;
-            break;
+            return {
+                ...state,
+                sellingPrice: action.sellingPrice
+            };
         case SET_PURCHASE_PRICE:
-            state.purchasePrice = action.purchasePrice;
-            break;
+            return {
+                ...state,
+                purchasePrice: action.purchasePrice
+            };
         case SET_CATEGORY_ID:
-            state.categoryId = action.categoryId;
-            break;
+            return {
+                ...state,
+                categoryId: action.categoryId
+            };
         case SET_LOADING:
-            state.isLoading = action.isLoading;
-            break;
+            return {
+                ...state,
+                isLoading: action.isLoading
+            };
         case SET_FILTERED_CATEGORY_ID:
-            state.filteredCategoryId = action.filteredCategoryId;
-            break;
+            return {
+                ...state,
+                filteredCategoryId: action.filteredCategoryId
+            };
         case SET_VISIBLE:
-            state.visible = action.visible;
-            break;
+            return {
+                ...state,
+                visible: action.visible
+            };
         case SET_PRODUCT:
-            state.product = action.product;
-            break;
+            return {
+                ...state,
+                product: action.product
+            };
         case SET_PRODUCT_ID_TO_CHANGE:
-            state.productIdToChange = action.productIdToChange;
-            break;
+            return {
+                ...state,
+                productIdToChange: action.productIdToChange
+            };
         default:
-            return state;
+            return {
+                ...state
+            };
     }
-    return Object.assign({}, state);
 };
 
 export default reducer;
