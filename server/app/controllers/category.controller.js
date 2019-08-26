@@ -1,4 +1,5 @@
 const Category = require('../models/category.model');
+const Product = require('../models/product.model');
 
 exports.findAll = (req, res) => {
     Category
@@ -45,8 +46,9 @@ exports.delete = (req, res) => {
                     message: "Category not found with id " + id
                 });
             }
-
-            res.status(200).send({
+        })
+        .then(() => {
+            return res.status(200).send({
                 message: "Category removed successfully with id " + id
             })
         })
@@ -59,5 +61,21 @@ exports.delete = (req, res) => {
             return res.status(500).send({
                 message: "Error deleting product with id " + id
             });
+        });
+
+    Category.find({title: "without category"})
+        .then(category => {
+            if (category) {
+                Product.updateMany({"category": id}, {"$set": {"category": category[0]._id}})
+                    .then(product => {
+                        return res.status(200).send({message: "success"});
+                    })
+                    .catch(err => {
+                        return res.status(400).send({err: err.message});
+                    });
+            }
         })
+        .catch(err => {
+            return res.status(400).send({err: err.message});
+        });
 };
