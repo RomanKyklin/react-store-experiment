@@ -71,7 +71,7 @@ exports.delete = (req, res) => {
                         return res.status(200).send({message: "success"});
                     })
                     .catch(err => {
-                        return res.status(400).send({err: err.message});
+                        return res.status(400).send({message: err.message});
                     });
             }
         })

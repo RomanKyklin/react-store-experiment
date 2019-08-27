@@ -133,17 +133,4 @@ AddProduct.propTypes = {
     categoryId: PropTypes.string
 };
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        categories: state.categories,
-        isError: state.isError,
-        errorMessage: state.errorMessage,
-        isLoading: state.isLoading,
-        title: state.title,
-        sellingPrice: state.sellingPrice,
-        purchasePrice: state.purchasePrice,
-        categoryId: state.categoryId
-    }
-};
-
-export default connect(mapStateToProps)(AddProduct)
+export default AddProduct;

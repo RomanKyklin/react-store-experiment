@@ -4,7 +4,7 @@ import store from '../store/store';
 import {fetchProducts, setError, setLoading} from "../actions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
-import ChangeProductModal from "./ChangeProductModal";
+import ChangeProductModal from "../containers/ChangeProductModal";
 import Button from "antd/es/button";
 import axios from 'axios';
 import {GET_OR_DELETE_PRODUCT_URL, HOME_URL} from "../constants/app-contants";
@@ -101,14 +101,5 @@ Product.propTypes = {
     filteredCategoryId: PropTypes.string
 };
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        products: state.products,
-        isError: state.isError,
-        isLoading: state.isLoading,
-        filteredCategoryId: state.filteredCategoryId
-    }
-};
-
-export default connect(mapStateToProps)(Product);
+export default Product;
 

@@ -1,7 +1,7 @@
 import * as React from "react";
-import Category from "./Category";
+import Category from "../containers/Category";
 import {Button, Col, Layout, Row} from "antd";
-import Product from "./Product";
+import Product from "../containers/Product";
 import {Link} from "react-router-dom";
 
 const {Content} = Layout;

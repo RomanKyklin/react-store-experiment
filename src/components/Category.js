@@ -67,14 +67,6 @@ Category.propTypes = {
     isLoading: PropTypes.bool,
 };
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        categories: state.categories,
-        isError: state.isError,
-        isLoading: state.isLoading,
-    }
-};
-
-export default connect(mapStateToProps)(Category);
+export default Category;
 
 

@@ -3,9 +3,9 @@ import {Alert, Button, Col, Form, Input, Row} from "antd";
 import axios from "axios";
 import {HOME_URL, ADD_CATEGORIES_URL} from "../constants/app-contants";
 import {setError, setTitle} from "../actions";
-import {connect, useDispatch} from "react-redux";
-import PropTypes from 'prop-types';
+import {useDispatch} from "react-redux";
 import _ from 'lodash';
+import PropTypes from "prop-types";
 
 const AddCategory = ({title, isError, errorMessage}) => {
     const dispatch = useDispatch();
@@ -66,15 +66,7 @@ const AddCategory = ({title, isError, errorMessage}) => {
 AddCategory.propTypes = {
     title: PropTypes.string,
     isError: PropTypes.bool.isRequired,
-    errorMessage: PropTypes.string
+    errorMessage: PropTypes.string,
 };
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        title: state.title,
-        isError: state.isError,
-        errorMessage: state.errorMessage
-    }
-};
-
-export default connect(mapStateToProps)(AddCategory);
+export default AddCategory;
