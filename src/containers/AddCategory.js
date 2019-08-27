@@ -5,9 +5,9 @@ import {connect} from "react-redux";
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        title: state.title,
-        isError: state.isError,
-        errorMessage: state.errorMessage,
+        title: state.categoryReducer.title,
+        isError: state.categoryReducer.isError,
+        errorMessage: state.categoryReducer.errorMessage,
     }
 };
 

@@ -3,14 +3,14 @@ import AddProduct from "../components/AddProduct";
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        categories: state.categories,
-        isError: state.isError,
-        errorMessage: state.errorMessage,
-        isLoading: state.isLoading,
-        title: state.title,
-        sellingPrice: state.sellingPrice,
-        purchasePrice: state.purchasePrice,
-        categoryId: state.categoryId
+        categories: state.productReducer.categories,
+        isError: state.productReducer.isError,
+        errorMessage: state.productReducer.errorMessage,
+        isLoading: state.productReducer.isLoading,
+        title: state.productReducer.title,
+        sellingPrice: state.productReducer.sellingPrice,
+        purchasePrice: state.productReducer.purchasePrice,
+        categoryId: state.productReducer.categoryId
     }
 };
 

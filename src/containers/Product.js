@@ -3,10 +3,10 @@ import Product from "../components/Product";
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        products: state.products,
-        isError: state.isError,
-        isLoading: state.isLoading,
-        filteredCategoryId: state.filteredCategoryId
+        products: state.productReducer.products,
+        isError: state.productReducer.isError,
+        isLoading: state.productReducer.isLoading,
+        filteredCategoryId: state.productReducer.filteredCategoryId
     }
 };
 

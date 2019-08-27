@@ -3,9 +3,9 @@ import Category from "../components/Category";
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        categories: state.categories,
-        isError: state.isError,
-        isLoading: state.isLoading,
+        categories: state.categoryReducer.categories,
+        isError: state.categoryReducer.isError,
+        isLoading: state.categoryReducer.isLoading,
     }
 };
 
