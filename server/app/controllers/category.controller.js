@@ -39,6 +39,16 @@ exports.delete = (req, res) => {
         });
     }
 
+    Category.find({title: "without category"})
+        .then(category => {
+            if (category) {
+                Product.updateMany({"category": id}, {"$set": {"category": category[0]._id}})
+                    .then(() => res.status(200).send({message: "success"}))
+                    .catch(err => res.status(400).send({message: err.message}));
+            }
+        })
+        .catch(err => res.status(400).send({err: err.message}));
+
     Category.findByIdAndDelete(id)
         .then(category => {
             if (!category) {
@@ -47,11 +57,9 @@ exports.delete = (req, res) => {
                 });
             }
         })
-        .then(() => {
-            return res.status(200).send({
-                message: "Category removed successfully with id " + id
-            })
-        })
+        .then(() => res.status(200).send({
+            message: "Category removed successfully with id " + id
+        }))
         .catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
@@ -61,21 +69,5 @@ exports.delete = (req, res) => {
             return res.status(500).send({
                 message: "Error deleting product with id " + id
             });
-        });
-
-    Category.find({title: "without category"})
-        .then(category => {
-            if (category) {
-                Product.updateMany({"category": id}, {"$set": {"category": category[0]._id}})
-                    .then(product => {
-                        return res.status(200).send({message: "success"});
-                    })
-                    .catch(err => {
-                        return res.status(400).send({message: err.message});
-                    });
-            }
-        })
-        .catch(err => {
-            return res.status(400).send({err: err.message});
         });
 };
