@@ -1,37 +1,8 @@
 import React from "react";
 import {Alert, Button, Col, Form, Input, Row} from "antd";
-import axios from "axios";
-import {HOME_URL, ADD_CATEGORIES_URL} from "../constants/app-contants";
-import {setError, setTitle} from "../actions";
-import {useDispatch} from "react-redux";
-import _ from 'lodash';
 import PropTypes from "prop-types";
 
-const AddCategory = ({title, isError, errorMessage}) => {
-    const dispatch = useDispatch();
-
-    const handleForm = (event) => {
-        event.preventDefault();
-        createCategory();
-    };
-
-    const handleChangeTitle = (event) => {
-        let title = _.get(event, 'target.value', '');
-
-        dispatch(setTitle(title));
-    };
-
-    const createCategory = () => {
-        axios.post(ADD_CATEGORIES_URL, {title})
-            .then(response => {
-                window.location.href = HOME_URL;
-            })
-            .catch(error => {
-                console.log(error);
-                dispatch(setError(true, 'Произошла ошибка. Поля заполнены неккоректно, либо попробуйте перезагрузить страницу или интернет.'));
-            })
-    };
-
+const AddCategory = ({title, isError, errorMessage, handleForm, handleChangeTitle}) => {
     if (isError) {
         return (
             <Row type="flex" justify="center">
@@ -67,6 +38,8 @@ AddCategory.propTypes = {
     title: PropTypes.string,
     isError: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string,
+    handleForm: PropTypes.func.isRequired,
+    handleChangeTitle: PropTypes.func.isRequired
 };
 
 export default AddCategory;

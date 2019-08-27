@@ -1,81 +1,24 @@
-import React, {useEffect} from "react";
-import {Modal, Button, Input, Select, Row, Col, Alert} from 'antd';
-import {useDispatch} from "react-redux";
-import {
-    setCategoryId,
-    setError,
-    setLoading,
-    setProduct, setProductIdToChange, setPurchasePrice, setSellingPrice,
-    setTitle,
-    setVisible
-} from "../actions";
-import {connect} from "react-redux";
+import React from "react";
+import {Modal, Button, Input, Select} from 'antd';
 import PropTypes from 'prop-types';
-import axios from "axios";
-import {GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL, HOME_URL} from "../constants/app-contants";
-import * as _ from "lodash";
 
 const {Option} = Select;
 
 const ChangeProductModal = ({
-                                id, title, sellingPrice,
-                                purchasePrice, categoryId, isLoading,
-                                isError, categories, visible, productIdToChange
+                                id, title, sellingPrice, purchasePrice, categoryId, isLoading, isError, categories,
+                                visible, productIdToChange, showModal, handleCancel, handleChangeTitle, handleOk,
+                                handleChangePurchasePrice, handleChangeSellingPrice, handleChangeCategory
                             }) => {
-
-    const dispatch = useDispatch();
-
-    const showModal = () => {
-        dispatch(setVisible(true));
-        dispatch(setProductIdToChange(id));
-    };
-
-    const handleCancel = () => {
-        dispatch(setVisible(false));
-    };
-
-    const handleOk = () => {
-        dispatch(setLoading(true));
-        axios.put(GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL, {id: productIdToChange, title, sellingPrice, purchasePrice, category: categoryId})
-            .then(() => {
-                dispatch(setVisible(false));
-                dispatch(setLoading(false));
-                window.location.href = HOME_URL;
-            })
-            .catch(err => {
-                dispatch(setLoading(false));
-                dispatch(setVisible(false));
-                dispatch(setError(true, ''));
-            })
-    };
-
-    const handleChangeTitle = (ev) => {
-        console.log(id);
-        dispatch(setTitle(_.get(ev, 'target.value', '')));
-    };
-
-    const handleChangePurchasePrice = (ev) => {
-        dispatch(setPurchasePrice(_.get(ev, 'target.value', '')));
-    };
-
-    const handleChangeSellingPrice = (ev) => {
-        dispatch(setSellingPrice(_.get(ev, 'target.value', '')));
-    };
-
-    const handleChangeCategory = (id) => {
-        dispatch(setCategoryId(id));
-    };
-
     if (!isLoading) {
         return (
             <div>
-                <Button type="primary" onClick={showModal}>
+                <Button type="primary" onClick={() => showModal(id)}>
                     Change
                 </Button>
                 <Modal
                     visible={visible}
                     title="Change product"
-                    onOk={handleOk}
+                    onOk={() => handleOk(productIdToChange, title, sellingPrice, purchasePrice, categoryId)}
                     onCancel={handleCancel}
                 >
                     <Input placeholder="Title" defaultValue={title} onChange={handleChangeTitle}/>
@@ -107,7 +50,14 @@ ChangeProductModal.propTypes = {
     isError: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string.isRequired,
     visible: PropTypes.bool.isRequired,
-    productIdToChange: PropTypes.string
+    productIdToChange: PropTypes.string,
+    showModal: PropTypes.func.isRequired,
+    handleCancel: PropTypes.func.isRequired,
+    handleChangeTitle: PropTypes.func.isRequired,
+    handleChangePurchasePrice: PropTypes.func.isRequired,
+    handleChangeSellingPrice: PropTypes.func.isRequired,
+    handleChangeCategory: PropTypes.func.isRequired,
+    handleOk: PropTypes.func.isRequired,
 };
 
 export default ChangeProductModal;

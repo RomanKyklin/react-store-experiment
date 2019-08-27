@@ -17,54 +17,17 @@ const AddProduct = ({
                         title,
                         sellingPrice,
                         purchasePrice,
-                        categoryId
+                        categoryId,
+                        handleChangeTitle,
+                        handleChangeSellingPrice,
+                        handleChangePurchasePrice,
+                        handleChangeCategory,
+                        handleForm
                     }) => {
 
     useEffect(() => {
         store.dispatch(fetchCategories());
     }, []);
-
-    const handleForm = (event) => {
-        event.preventDefault();
-        if (title.trim().length === 0 || sellingPrice.trim().length === 0 || purchasePrice.trim().length === 0
-            || categoryId.trim().length === 0) {
-            store.dispatch(setError(true, 'Поля заполнены некорректно.'));
-            return;
-        }
-        createProduct();
-    };
-
-    const handleChangeTitle = (event) => {
-        const title = event.target.value;
-        store.dispatch(setTitle(title));
-    };
-
-    const handleChangeSellingPrice = (event) => {
-        const sellingPrice = event.target.value;
-        store.dispatch(setSellingPrice(sellingPrice));
-    };
-
-    const handleChangePurchasePrice = (event) => {
-        const purchasePrice = event.target.value;
-        store.dispatch(setPurchasePrice(purchasePrice));
-    };
-
-    const handleChangeCategory = (id) => {
-        store.dispatch(setCategoryId(id));
-    };
-
-    const createProduct = () => {
-        axios.post(GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL, {
-            title, sellingPrice, purchasePrice, category: categoryId
-        })
-            .then(response => {
-                window.location.href = HOME_URL;
-            })
-            .catch(error => {
-                console.log(error);
-                store.dispatch(setError(true, 'Произошла ошибка, попробуйте повторить позже'));
-            });
-    };
 
     if (isError) {
         return (
@@ -79,7 +42,7 @@ const AddProduct = ({
     return (
         <Row type="flex" justify="center">
             <Col style={{textAlign: "center"}} span={13}>
-                <Form className="create-product-form" onSubmit={handleForm}>
+                <Form className="create-product-form" onSubmit={(event) => handleForm(event, title, sellingPrice, purchasePrice, categoryId)}>
                     <Form.Item>
                         <Input
                             placeholder="title"
@@ -130,7 +93,13 @@ AddProduct.propTypes = {
     title: PropTypes.string,
     sellingPrice: PropTypes.string,
     purchasePrice: PropTypes.string,
-    categoryId: PropTypes.string
+    categoryId: PropTypes.string,
+    handleChangeTitle: PropTypes.func.isRequired,
+    handleChangeSellingPrice: PropTypes.func.isRequired,
+    handleChangePurchasePrice: PropTypes.func.isRequired,
+    handleChangeCategory: PropTypes.func.isRequired,
+    handleForm: PropTypes.func.isRequired
+
 };
 
 export default AddProduct;
