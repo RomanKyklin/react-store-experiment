@@ -1,11 +1,8 @@
 import React, {useEffect} from "react";
 import {Form, Input, Button, Col, Row, Select, Alert} from 'antd';
 import PropTypes from 'prop-types';
-import axios from "axios";
-import store from '../store/store';
-import {fetchCategories, setCategoryId, setError, setPurchasePrice, setSellingPrice, setTitle} from "../actions";
-import {connect} from "react-redux";
-import {GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL, HOME_URL} from '../constants/app-contants'
+import {fetchCategories} from "../actions";
+import {useDispatch} from "react-redux";
 
 const {Option} = Select;
 
@@ -25,8 +22,10 @@ const AddProduct = ({
                         handleForm
                     }) => {
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        store.dispatch(fetchCategories());
+        dispatch(fetchCategories());
     }, []);
 
     if (isError) {
@@ -42,7 +41,8 @@ const AddProduct = ({
     return (
         <Row type="flex" justify="center">
             <Col style={{textAlign: "center"}} span={13}>
-                <Form className="create-product-form" onSubmit={(event) => handleForm(event, title, sellingPrice, purchasePrice, categoryId)}>
+                <Form className="create-product-form"
+                      onSubmit={(event) => handleForm(event, title, sellingPrice, purchasePrice, categoryId)}>
                     <Form.Item>
                         <Input
                             placeholder="title"

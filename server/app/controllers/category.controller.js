@@ -47,27 +47,26 @@ exports.delete = (req, res) => {
                     .catch(err => res.status(400).send({message: err.message}));
             }
         })
+        .then(() => Category.findByIdAndDelete(id)
+            .then(category => {
+                if (!category) {
+                    return res.status(404).send({
+                        message: "Category not found with id " + id
+                    });
+                }
+            })
+            .then(() => res.status(200).send({
+                message: "Category removed successfully with id " + id
+            }))
+            .catch(err => {
+                if (err.kind === 'ObjectId') {
+                    return res.status(404).send({
+                        message: "Category not found with id " + id
+                    });
+                }
+                return res.status(500).send({
+                    message: "Error deleting product with id " + id
+                });
+            }))
         .catch(err => res.status(400).send({err: err.message}));
-
-    Category.findByIdAndDelete(id)
-        .then(category => {
-            if (!category) {
-                return res.status(404).send({
-                    message: "Category not found with id " + id
-                });
-            }
-        })
-        .then(() => res.status(200).send({
-            message: "Category removed successfully with id " + id
-        }))
-        .catch(err => {
-            if (err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    message: "Category not found with id " + id
-                });
-            }
-            return res.status(500).send({
-                message: "Error deleting product with id " + id
-            });
-        });
 };

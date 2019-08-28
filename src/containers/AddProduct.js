@@ -1,9 +1,9 @@
 import {connect} from "react-redux";
 import AddProduct from "../components/AddProduct";
-import store from "../store/store";
-import {setCategoryId, setError, setPurchasePrice, setSellingPrice, setTitle} from "../actions";
-import axios from "axios";
-import {GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL, HOME_URL} from "../constants/app-contants";
+import {
+    createProduct, handleChangeCategory, handleChangePurchasePrice, handleChangeSellingPrice, handleChangeTitle,
+    setError,
+} from "../actions";
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -18,36 +18,12 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-const createProduct = (title, sellingPrice, purchasePrice, categoryId) => {
-    axios.post(GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL, {
-        title, sellingPrice, purchasePrice, category: categoryId
-    })
-        .then(response => {
-            window.location.href = HOME_URL;
-        })
-        .catch(error => {
-            console.log(error);
-            store.dispatch(setError(true, 'Произошла ошибка, попробуйте повторить позже'));
-        });
-};
-
 const mapDispatchToProps = dispatch => {
     return {
-        handleChangeTitle: (event) => {
-            const title = event.target.value;
-            dispatch(setTitle(title));
-        },
-        handleChangeSellingPrice: (event) => {
-            const sellingPrice = event.target.value;
-            dispatch(setSellingPrice(sellingPrice));
-        },
-        handleChangePurchasePrice: (event) => {
-            const purchasePrice = event.target.value;
-            dispatch(setPurchasePrice(purchasePrice));
-        },
-        handleChangeCategory: (id) => {
-            dispatch(setCategoryId(id));
-        },
+        handleChangeTitle: (event) => dispatch(handleChangeTitle(event)),
+        handleChangeSellingPrice: (event) => dispatch(handleChangeSellingPrice(event)),
+        handleChangePurchasePrice: (event) => dispatch(handleChangePurchasePrice(event)),
+        handleChangeCategory: (id) => dispatch(handleChangeCategory(id)),
         handleForm: (event, title, sellingPrice, purchasePrice, categoryId) => {
             event.preventDefault();
             if (title.trim().length === 0 || sellingPrice.trim().length === 0 || purchasePrice.trim().length === 0
@@ -55,7 +31,7 @@ const mapDispatchToProps = dispatch => {
                 dispatch(setError(true, 'Поля заполнены некорректно.'));
                 return;
             }
-            createProduct(title, sellingPrice, purchasePrice, categoryId);
+            dispatch(createProduct(title, sellingPrice, purchasePrice, categoryId));
         }
     }
 };

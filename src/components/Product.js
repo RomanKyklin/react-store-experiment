@@ -1,15 +1,14 @@
 import React, {useEffect} from 'react';
-import {Col, Divider, Row, Table, Spin, Layout} from "antd";
-import store from '../store/store';
-import {fetchProducts, setError, setLoading} from "../actions";
-import {connect} from "react-redux";
+import {Col, Row, Table, Spin} from "antd";
+import {fetchProducts} from "../actions";
+import {useDispatch} from "react-redux";
 import PropTypes from 'prop-types';
 import ChangeProductModal from "../containers/ChangeProductModal";
 import Button from "antd/es/button";
-import axios from 'axios';
-import {GET_OR_DELETE_PRODUCT_URL, HOME_URL} from "../constants/app-contants";
 
 const Product = ({products, isError, isLoading, filteredCategoryId, handleDelete}) => {
+
+    const dispatch = useDispatch();
 
     const columns = [
         {
@@ -47,7 +46,7 @@ const Product = ({products, isError, isLoading, filteredCategoryId, handleDelete
     ];
 
     useEffect(() => {
-        store.dispatch(fetchProducts());
+        dispatch(fetchProducts());
     }, [filteredCategoryId]);
 
     const filterProduct = () => {

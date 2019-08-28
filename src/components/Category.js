@@ -2,8 +2,8 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Menu, Icon} from "antd";
 import Sider from "antd/es/layout/Sider";
-import {fetchCategories, setError, setFilteredCategoryId, setLoading} from "../actions";
-import {connect, useDispatch} from "react-redux";
+import {fetchCategories} from "../actions";
+import {useDispatch} from "react-redux";
 
 const Category = ({categories, isError, isLoading, handleClick, handleDeleteCategory}) => {
     const dispatch = useDispatch();

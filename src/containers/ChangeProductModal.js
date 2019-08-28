@@ -1,17 +1,12 @@
 import {connect} from "react-redux";
 import ChangeProductModal from "../components/ChangeProductModal";
-import _ from "lodash";
 import {
-    setCategoryId, setError,
-    setLoading,
+    handleChangeCategory,
+    handleChangePurchasePrice, handleChangeSellingPrice,
+    handleChangeTitle,
     setProductIdToChange,
-    setPurchasePrice,
-    setSellingPrice,
-    setTitle,
-    setVisible
+    setVisible, updateProduct
 } from "../actions";
-import axios from "axios";
-import {GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL, HOME_URL} from "../constants/app-contants";
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -38,37 +33,12 @@ const mapDispatchToProps = dispatch => {
         handleCancel: () => {
             dispatch(setVisible(false));
         },
-        handleChangeTitle: (ev) => {
-            dispatch(setTitle(_.get(ev, 'target.value', '')));
-        },
-        handleChangePurchasePrice: (ev) => {
-            dispatch(setPurchasePrice(_.get(ev, 'target.value', '')));
-        },
-        handleChangeSellingPrice: (ev) => {
-            dispatch(setSellingPrice(_.get(ev, 'target.value', '')));
-        },
-        handleChangeCategory: (id) => {
-            dispatch(setCategoryId(id));
-        },
+        handleChangeTitle: (event) => dispatch(handleChangeTitle(event)),
+        handleChangePurchasePrice: (event) => dispatch(handleChangePurchasePrice(event)),
+        handleChangeSellingPrice: (event) => dispatch(handleChangeSellingPrice(event)),
+        handleChangeCategory: (id) => dispatch(handleChangeCategory(id)),
         handleOk: (productIdToChange, title, sellingPrice, purchasePrice, categoryId) => {
-            dispatch(setLoading(true));
-            axios.put(GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL, {
-                id: productIdToChange,
-                title,
-                sellingPrice,
-                purchasePrice,
-                category: categoryId
-            })
-                .then(() => {
-                    dispatch(setVisible(false));
-                    dispatch(setLoading(false));
-                    window.location.href = HOME_URL;
-                })
-                .catch(err => {
-                    dispatch(setLoading(false));
-                    dispatch(setVisible(false));
-                    dispatch(setError(true, ''));
-                })
+            dispatch(updateProduct(productIdToChange, title, sellingPrice, purchasePrice, categoryId))
         }
     }
 };

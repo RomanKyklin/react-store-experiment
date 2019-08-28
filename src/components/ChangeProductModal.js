@@ -11,7 +11,7 @@ const ChangeProductModal = ({
                             }) => {
     if (!isLoading) {
         return (
-            <div>
+            <>
                 <Button type="primary" onClick={() => showModal(id)}>
                     Change
                 </Button>
@@ -33,7 +33,7 @@ const ChangeProductModal = ({
                         })}
                     </Select>
                 </Modal>
-            </div>
+            </>
         );
     }
 
