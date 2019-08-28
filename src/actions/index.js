@@ -11,7 +11,7 @@ import _ from "lodash";
 import {
     ADD_CATEGORIES_URL, DELETE_CATEGORY,
     GET_CATEGORIES_URL, GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL,
-    GET_OR_DELETE_PRODUCT_URL,
+    GET_OR_DELETE_PRODUCT_URL, GET_PRODUCTS_BY_CATEGORY,
     GET_PRODUCTS_URL, HOME_URL
 } from "../constants/app-contants";
 import store from "../store/store";
@@ -193,4 +193,24 @@ export const deleteProduct = (id, title) => dispatch => {
                 dispatch(setError(true, ''));
             })
     }
+};
+
+export const fetchProductsByCategory = (id) => dispatch => {
+    dispatch(setLoading(true));
+    return axios.get(GET_PRODUCTS_BY_CATEGORY, {params: {id}})
+        .then(response => {
+            const products = _.get(response, 'data', []);
+            console.log(products);
+            if (!_.isArray(products)) {
+                dispatch(setError(true));
+                return;
+            }
+            dispatch(setProducts(products));
+        })
+        .then(() => dispatch(setLoading(false)))
+        .catch(error => {
+            // handle error
+            console.log(error);
+            dispatch(setError(true));
+        });
 };

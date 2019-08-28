@@ -12,7 +12,6 @@ export const initialState = {
     sellingPrice: '0',
     purchasePrice: '',
     categoryId: '',
-    filteredCategoryId: '',
     visible: false,
     product: {},
     productIdToChange: ''

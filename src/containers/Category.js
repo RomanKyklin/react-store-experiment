@@ -1,5 +1,5 @@
 import Category from "../components/Category";
-import {deleteCategory, setFilteredCategoryId} from "../actions";
+import {deleteCategory, fetchProductsByCategory, setFilteredCategoryId} from "../actions";
 import {connect} from "react-redux";
 
 const mapStateToProps = (state, ownProps) => {
@@ -12,7 +12,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleClick: (id) => dispatch(setFilteredCategoryId(id)),
+        handleClick: (id) => dispatch(fetchProductsByCategory(id)),
         handleDeleteCategory: (id, title) => dispatch(deleteCategory(id, title))
     }
 };

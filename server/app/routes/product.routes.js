@@ -3,6 +3,7 @@ module.exports = (app) => {
 
     app.get('/products', product.findAll);
     app.get('/product', product.find);
+    app.get('/products/category/', product.findByCategory);
     app.post('/products', product.create);
     app.put('/products', product.change);
     app.delete('/product', product.delete);

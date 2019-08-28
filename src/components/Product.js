@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import ChangeProductModal from "../containers/ChangeProductModal";
 import Button from "antd/es/button";
 
-const Product = ({products, isError, isLoading, filteredCategoryId, handleDelete}) => {
+const Product = ({products, isLoading, handleDelete}) => {
 
     const dispatch = useDispatch();
 
@@ -47,15 +47,7 @@ const Product = ({products, isError, isLoading, filteredCategoryId, handleDelete
 
     useEffect(() => {
         dispatch(fetchProducts());
-    }, [filteredCategoryId]);
-
-    const filterProduct = () => {
-        products = products.filter(val => val.category ? val.category._id === filteredCategoryId : false);
-    };
-
-    if (filteredCategoryId) {
-        filterProduct();
-    }
+    }, []);
 
     if (isLoading) {
         return (
@@ -78,9 +70,7 @@ const Product = ({products, isError, isLoading, filteredCategoryId, handleDelete
 
 Product.propTypes = {
     products: PropTypes.array.isRequired,
-    isError: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    filteredCategoryId: PropTypes.string,
     handleDelete: PropTypes.func.isRequired
 };
 

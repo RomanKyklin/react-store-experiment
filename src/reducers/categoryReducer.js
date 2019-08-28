@@ -1,7 +1,7 @@
 import {initialState} from "./reducer";
 import {
     SET_CATEGORY, SET_CATEGORY_ID,
-    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_LOADING, SET_PRODUCT, SET_PRODUCT_ID_TO_CHANGE,
+    SET_ERROR, SET_LOADING, SET_PRODUCT, SET_PRODUCT_ID_TO_CHANGE,
     SET_PRODUCTS,
     SET_PURCHASE_PRICE,
     SET_SELLING_PRICE,
@@ -50,11 +50,6 @@ const categoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: action.isLoading
-            };
-        case SET_FILTERED_CATEGORY_ID:
-            return {
-                ...state,
-                filteredCategoryId: action.filteredCategoryId
             };
         case SET_VISIBLE:
             return {

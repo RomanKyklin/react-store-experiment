@@ -20,8 +20,6 @@ const Category = ({categories, isError, isLoading, handleClick, handleDeleteCate
                 defaultOpenKeys={['sub1']}
                 style={{height: '100%', borderRight: 0}}
             >
-                <Menu.Item onClick={() => handleClick('')}>All categories</Menu.Item>
-
                 {categories.map(category => {
                     return (
                         <Menu.Item key={category._id}

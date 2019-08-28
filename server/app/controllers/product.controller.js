@@ -130,3 +130,32 @@ exports.delete = (req, res) => {
             });
         })
 };
+
+exports.findByCategory = (req, res) => {
+    if(!req.query.id) {
+        return res.status(400).send({
+            message: "Category id can not be empty"
+        })
+    }
+
+    Product.find({category: req.query.id})
+        .populate('category')
+        .then(products => {
+            if(!products) {
+                return res.status(404).send({
+                    message: "Products not found with category id " + req.params.id
+                });
+            }
+            return res.status(200).send(products);
+        })
+        .catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Products not found with category id " + req.query.id
+                });
+            }
+            return res.status(500).send({
+                message: "Error searching products with category id " + req.query.id
+            });
+        })
+};
