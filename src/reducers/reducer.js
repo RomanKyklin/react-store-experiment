@@ -14,7 +14,10 @@ export const initialState = {
     categoryId: '',
     visible: false,
     product: {},
-    productIdToChange: ''
+    productIdToChange: '',
+    productsCount: 0,
+    perPage: 10,
+    page: 1
 };
 
 

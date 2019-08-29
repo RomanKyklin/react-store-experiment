@@ -1,8 +1,8 @@
 import {initialState} from "./reducer";
 import {
     SET_CATEGORY, SET_CATEGORY_ID,
-    SET_ERROR, SET_LOADING, SET_PRODUCT, SET_PRODUCT_ID_TO_CHANGE,
-    SET_PRODUCTS,
+    SET_ERROR, SET_LOADING, SET_PAGE, SET_PER_PAGE, SET_PRODUCT, SET_PRODUCT_ID_TO_CHANGE,
+    SET_PRODUCTS, SET_PRODUCTS_COUNT,
     SET_PURCHASE_PRICE,
     SET_SELLING_PRICE,
     SET_TITLE, SET_VISIBLE
@@ -65,6 +65,21 @@ const productReducer = (state = initialState, action) => {
             return {
                 ...state,
                 productIdToChange: action.productIdToChange
+            };
+        case SET_PRODUCTS_COUNT:
+            return {
+                ...state,
+                productsCount: action.productsCount
+            };
+        case SET_PER_PAGE:
+            return {
+                ...state,
+                perPage: action.perPage
+            };
+        case SET_PAGE:
+            return {
+              ...state,
+              page: action.page
             };
         default:
             return {

@@ -1,7 +1,7 @@
 import {
     SET_CATEGORY, SET_CATEGORY_ID,
-    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_LOADING, SET_PRODUCT, SET_PRODUCT_ID_TO_CHANGE,
-    SET_PRODUCTS,
+    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_LOADING, SET_PAGE, SET_PER_PAGE, SET_PRODUCT, SET_PRODUCT_ID_TO_CHANGE,
+    SET_PRODUCTS, SET_PRODUCTS_COUNT,
     SET_PURCHASE_PRICE,
     SET_SELLING_PRICE,
     SET_TITLE, SET_VISIBLE
@@ -11,8 +11,7 @@ import _ from "lodash";
 import {
     ADD_CATEGORIES_URL, DELETE_CATEGORY,
     GET_CATEGORIES_URL, GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL,
-    GET_OR_DELETE_PRODUCT_URL, GET_PRODUCTS_BY_CATEGORY,
-    GET_PRODUCTS_URL, HOME_URL
+    GET_OR_DELETE_PRODUCT_URL, GET_PRODUCTS_URL, HOME_URL
 } from "../constants/app-contants";
 import store from "../store/store";
 
@@ -46,6 +45,12 @@ export const setVisible = makeActionCreator(SET_VISIBLE, 'visible');
 
 export const setProduct = makeActionCreator(SET_PRODUCT, 'product');
 
+export const setPage = makeActionCreator(SET_PAGE, 'page');
+
+export const setProductsCount = makeActionCreator(SET_PRODUCTS_COUNT, 'productsCount');
+
+export const setPerPage = makeActionCreator(SET_PER_PAGE, 'perPage');
+
 export const setProductIdToChange = makeActionCreator(SET_PRODUCT_ID_TO_CHANGE, 'productIdToChange');
 
 export const fetchCategories = () => dispatch => {
@@ -68,18 +73,20 @@ export const fetchCategories = () => dispatch => {
         });
 };
 
-export const fetchProducts = () => dispatch => {
+export const fetchProducts = (perPage = 10, page = 1, filterCategoryId = null) => dispatch => {
     dispatch(setLoading(true));
-
-    return axios.get(GET_PRODUCTS_URL)
+    return axios.get(GET_PRODUCTS_URL, {params: {perPage, page, filterCategoryId}})
         .then(response => {
-            const products = _.get(response, 'data', []);
-
+            const products = _.get(response, 'data.products', []);
+            const productsCount = _.get(response, 'data.total', 0);
             if (!_.isArray(products)) {
                 dispatch(setError(true));
                 return;
             }
             dispatch(setProducts(products));
+            dispatch(setProductsCount(productsCount));
+            dispatch(setPerPage(perPage));
+            dispatch(setPage(page));
         })
         .then(() => dispatch(setLoading(false)))
         .catch(error => {
@@ -197,20 +204,9 @@ export const deleteProduct = (id, title) => dispatch => {
 
 export const fetchProductsByCategory = (id) => dispatch => {
     dispatch(setLoading(true));
-    return axios.get(GET_PRODUCTS_BY_CATEGORY, {params: {id}})
-        .then(response => {
-            const products = _.get(response, 'data', []);
-            console.log(products);
-            if (!_.isArray(products)) {
-                dispatch(setError(true));
-                return;
-            }
-            dispatch(setProducts(products));
-        })
-        .then(() => dispatch(setLoading(false)))
-        .catch(error => {
-            // handle error
-            console.log(error);
-            dispatch(setError(true));
-        });
+    dispatch(fetchProducts(10, 1, id));
+};
+
+export const handlePageChange = (page, pageSize) => dispatch => {
+    dispatch(fetchProducts(pageSize, page));
 };

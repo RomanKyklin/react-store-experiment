@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const Product = require('../models/product.model.js');
 const Category = require('../models/category.model');
 
@@ -31,14 +32,50 @@ exports.find = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-    Product.find()
-        .populate('category')
-        .then((products) => res.send(products))
-        .catch((error) => {
-            res.status(500).send({
-                message: error.message || "Some error occurred while retrieving notes."
-            });
-        })
+    const page = parseInt(_.get(req.query, 'page', 1));
+    const perPage = parseInt(_.get(req.query, 'perPage', 10));
+    const filterCategoryId = _.get(req.query, 'filterCategoryId', null);
+
+    Product.count()
+        .then(count => {
+            if (filterCategoryId) {
+                Product.find({category: filterCategoryId})
+                    .populate('category')
+                    .skip((perPage * page) - perPage)
+                    .limit(perPage)
+                    .then(products => {
+                        return res.send({
+                            products,
+                            page,
+                            pagesCount: Math.ceil(products.length / perPage),
+                            total: products.length
+                        })
+                    })
+                    .catch((error) => {
+                        res.status(500).send({
+                            message: error.message || "Some error occurred while retrieving notes."
+                        });
+                    })
+            } else {
+                Product.find()
+                    .populate('category')
+                    .skip((perPage * page) - perPage)
+                    .limit(perPage)
+                    .then(products => {
+                        return res.send({
+                            products,
+                            page,
+                            pagesCount: Math.ceil(count / perPage),
+                            total: count
+                        })
+                    })
+                    .catch((error) => {
+                        res.status(500).send({
+                            message: error.message || "Some error occurred while retrieving notes."
+                        });
+                    })
+            }
+        });
 };
 
 exports.create = (req, res) => {
@@ -108,16 +145,16 @@ exports.delete = (req, res) => {
 
     Product.findByIdAndDelete(req.body.id)
         .then(product => {
-            if(!product) {
-                return res.status(404).send({
-                    message: "Product not found with id " + req.params.id
-                });
-            }
+                if (!product) {
+                    return res.status(404).send({
+                        message: "Product not found with id " + req.params.id
+                    });
+                }
 
-            res.status(200).send({
-                message: "product removed successfully with id " + req.body.id
-            })
-        }
+                res.status(200).send({
+                    message: "product removed successfully with id " + req.body.id
+                })
+            }
         )
         .catch(err => {
             if (err.kind === 'ObjectId') {
@@ -127,35 +164,6 @@ exports.delete = (req, res) => {
             }
             return res.status(500).send({
                 message: "Error deleting product with id " + req.params.id
-            });
-        })
-};
-
-exports.findByCategory = (req, res) => {
-    if(!req.query.id) {
-        return res.status(400).send({
-            message: "Category id can not be empty"
-        })
-    }
-
-    Product.find({category: req.query.id})
-        .populate('category')
-        .then(products => {
-            if(!products) {
-                return res.status(404).send({
-                    message: "Products not found with category id " + req.params.id
-                });
-            }
-            return res.status(200).send(products);
-        })
-        .catch(err => {
-            if (err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    message: "Products not found with category id " + req.query.id
-                });
-            }
-            return res.status(500).send({
-                message: "Error searching products with category id " + req.query.id
             });
         })
 };

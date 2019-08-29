@@ -1,19 +1,23 @@
 import {connect} from "react-redux";
 import Product from "../components/Product";
-import {deleteProduct} from "../actions";
+import {deleteProduct, handlePageChange} from "../actions";
 
 const mapStateToProps = (state, ownProps) => {
     return {
         products: state.productReducer.products,
         isError: state.productReducer.isError,
         isLoading: state.productReducer.isLoading,
-        filteredCategoryId: state.productReducer.filteredCategoryId
+        productsCount: state.productReducer.productsCount,
+        perPage: state.productReducer.perPage,
+        filteredCategoryId: state.productReducer.filteredCategoryId,
+        page: state.productReducer.page
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleDelete: (id, title) => dispatch(deleteProduct(id, title))
+        handleDelete: (id, title) => dispatch(deleteProduct(id, title)),
+        handlePageChange
     }
 };
 

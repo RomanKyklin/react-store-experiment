@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
-import {Col, Row, Table, Spin} from "antd";
+import {Col, Row, Table, Spin, Pagination} from "antd";
 import {fetchProducts} from "../actions";
 import {useDispatch} from "react-redux";
 import PropTypes from 'prop-types';
 import ChangeProductModal from "../containers/ChangeProductModal";
 import Button from "antd/es/button";
 
-const Product = ({products, isLoading, handleDelete}) => {
+const Product = ({products, isLoading, handleDelete, productsCount, perPage, page, handlePageChange}) => {
 
     const dispatch = useDispatch();
 
@@ -60,18 +60,30 @@ const Product = ({products, isLoading, handleDelete}) => {
     }
 
     return (
-        <Row>
-            <Col>
-                <Table columns={columns} dataSource={products}/>
-            </Col>
-        </Row>
+        <>
+            <Row>
+                <Col>
+                    <Table columns={columns} dataSource={products} pagination={false}/>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Pagination defaultCurrent={page} total={productsCount} pageSize={perPage}
+                                onChange={(page, pageSize) => dispatch(handlePageChange(page, pageSize))}/>
+                </Col>
+            </Row>
+        </>
     )
 };
 
 Product.propTypes = {
     products: PropTypes.array.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    handleDelete: PropTypes.func.isRequired
+    productsCount: PropTypes.number.isRequired,
+    handleDelete: PropTypes.func.isRequired,
+    perPage: PropTypes.number.isRequired,
+    page: PropTypes.number.isRequired,
+    handlePageChange: PropTypes.func.isRequired
 };
 
 export default Product;
