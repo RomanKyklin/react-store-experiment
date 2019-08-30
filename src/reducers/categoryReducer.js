@@ -1,11 +1,8 @@
 import {initialState} from "./reducer";
 import {
-    SET_CATEGORY, SET_CATEGORY_ID,
-    SET_ERROR, SET_LOADING, SET_PRODUCT, SET_PRODUCT_ID_TO_CHANGE,
+    SET_CATEGORY,
+    SET_ERROR, SET_LOADING, SET_PRODUCT,
     SET_PRODUCTS,
-    SET_PURCHASE_PRICE,
-    SET_SELLING_PRICE,
-    SET_TITLE, SET_VISIBLE
 } from "../constants/action-types";
 
 const categoryReducer = (state = initialState, action) => {
@@ -26,45 +23,15 @@ const categoryReducer = (state = initialState, action) => {
                 isError: action.isError,
                 errorMessage: action.errorMessage
             };
-        case SET_TITLE:
-            return {
-                ...state,
-                title: action.title
-            };
-        case SET_SELLING_PRICE:
-            return {
-                ...state,
-                sellingPrice: action.sellingPrice
-            };
-        case SET_PURCHASE_PRICE:
-            return {
-                ...state,
-                purchasePrice: action.purchasePrice
-            };
-        case SET_CATEGORY_ID:
-            return {
-                ...state,
-                categoryId: action.categoryId
-            };
         case SET_LOADING:
             return {
                 ...state,
                 isLoading: action.isLoading
             };
-        case SET_VISIBLE:
-            return {
-                ...state,
-                visible: action.visible
-            };
         case SET_PRODUCT:
             return {
                 ...state,
                 product: action.product
-            };
-        case SET_PRODUCT_ID_TO_CHANGE:
-            return {
-                ...state,
-                productIdToChange: action.productIdToChange
             };
         default:
             return {

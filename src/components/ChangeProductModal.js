@@ -1,31 +1,45 @@
-import React from "react";
+import React, {useState} from "react";
 import {Modal, Button, Input, Select} from 'antd';
 import PropTypes from 'prop-types';
+import {
+    handleChangeCategory,
+    handleChangePurchasePrice,
+    handleChangeSellingPrice,
+    handleChangeTitle, handleVisible
+} from "../containers/Forms";
 
 const {Option} = Select;
 
 const ChangeProductModal = ({
-                                id, title, sellingPrice, purchasePrice, categoryId, isLoading, isError, categories,
-                                visible, productIdToChange, showModal, handleCancel, handleChangeTitle, handleOk,
-                                handleChangePurchasePrice, handleChangeSellingPrice, handleChangeCategory
+                                id, isLoading, isError, categories, handleOk, initialTitle, initialSellingPrice,
+                                initialPurchasePrice, initialCategoryId
                             }) => {
+    const [title, setTitle] = useState(initialTitle);
+    const [sellingPrice, setSellingPrice] = useState(initialSellingPrice);
+    const [purchasePrice, setPurchasePrice] = useState(initialPurchasePrice);
+    const [categoryId, setCategoryId] = useState(initialCategoryId);
+    const [visible, setVisible] = useState(false);
+
     if (!isLoading) {
         return (
             <>
-                <Button type="primary" onClick={() => showModal(id)}>
+                <Button type="primary" onClick={() => handleVisible(!visible, setVisible)}>
                     Change
                 </Button>
                 <Modal
                     visible={visible}
                     title="Change product"
-                    onOk={() => handleOk(productIdToChange, title, sellingPrice, purchasePrice, categoryId)}
-                    onCancel={handleCancel}
+                    onOk={() => handleOk(id, title, sellingPrice, purchasePrice, categoryId)}
+                    onCancel={() => handleVisible(!visible, setVisible)}
                 >
-                    <Input placeholder="Title" defaultValue={title} onChange={handleChangeTitle}/>
-                    <Input placeholder="Selling price" onChange={handleChangeSellingPrice}/>
-                    <Input placeholder="Purchase price"
-                           onChange={handleChangePurchasePrice}/>
-                    <Select style={{width: 120}} onChange={handleChangeCategory}>
+                    <Input placeholder="Title" defaultValue={title}
+                           onChange={(event) => handleChangeTitle(event, setTitle)}/>
+                    <Input placeholder="Selling price" defaultValue={sellingPrice}
+                           onChange={(event) => handleChangeSellingPrice(event, setSellingPrice)}/>
+                    <Input placeholder="Purchase price" defaultValue={purchasePrice}
+                           onChange={(event) => handleChangePurchasePrice(event, setPurchasePrice)}/>
+                    <Select style={{width: 120}} onChange={(event) => handleChangeCategory(event, setCategoryId)}
+                            defaultValue={categoryId}>
                         {categories.map(category => {
                             return (
                                 <Option key={category._id} value={category._id}>{category.title}</Option>
@@ -41,22 +55,14 @@ const ChangeProductModal = ({
 
 ChangeProductModal.propTypes = {
     id: PropTypes.string.isRequired,
+    initialTitle: PropTypes.string.isRequired,
+    initialSellingPrice: PropTypes.number.isRequired,
+    initialPurchasePrice: PropTypes.number.isRequired,
+    initialCategoryId: PropTypes.string.isRequired,
     categories: PropTypes.array.isRequired,
-    title: PropTypes.string,
-    sellingPrice: PropTypes.string,
-    purchasePrice: PropTypes.string,
-    categoryId: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
     isError: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string.isRequired,
-    visible: PropTypes.bool.isRequired,
-    productIdToChange: PropTypes.string,
-    showModal: PropTypes.func.isRequired,
-    handleCancel: PropTypes.func.isRequired,
-    handleChangeTitle: PropTypes.func.isRequired,
-    handleChangePurchasePrice: PropTypes.func.isRequired,
-    handleChangeSellingPrice: PropTypes.func.isRequired,
-    handleChangeCategory: PropTypes.func.isRequired,
     handleOk: PropTypes.func.isRequired,
 };
 

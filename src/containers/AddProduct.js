@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import AddProduct from "../components/AddProduct";
 import {
-    createProduct, handleChangeCategory, handleChangePurchasePrice, handleChangeSellingPrice, handleChangeTitle,
+    createProduct,
     setError,
 } from "../actions";
 
@@ -20,10 +20,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleChangeTitle: (event) => dispatch(handleChangeTitle(event)),
-        handleChangeSellingPrice: (event) => dispatch(handleChangeSellingPrice(event)),
-        handleChangePurchasePrice: (event) => dispatch(handleChangePurchasePrice(event)),
-        handleChangeCategory: (id) => dispatch(handleChangeCategory(id)),
         handleForm: (event, title, sellingPrice, purchasePrice, categoryId) => {
             event.preventDefault();
             if (title.trim().length === 0 || sellingPrice.trim().length === 0 || purchasePrice.trim().length === 0
