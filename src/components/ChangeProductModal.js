@@ -1,15 +1,17 @@
 import React from "react";
-import {Modal, Button, Input, Select} from 'antd';
+import {Modal, Button, Input, Select, Form} from 'antd';
 import PropTypes from 'prop-types';
+import {Field, reduxForm} from "redux-form";
+import AddProduct from "./AddProduct";
 
 const {Option} = Select;
 
-const ChangeProductModal = ({
-                                id, title, sellingPrice, purchasePrice, categoryId, isLoading, isError, categories,
-                                visible, productIdToChange, showModal, handleCancel, handleChangeTitle, handleOk,
-                                handleChangePurchasePrice, handleChangeSellingPrice, handleChangeCategory
-                            }) => {
+let ChangeProductModal = ({
+                              id, categoryId, isLoading, isError, categories,
+                              visible, showModal, handleCancel, handleOk, handleSubmit
+                          }) => {
     if (!isLoading) {
+
         return (
             <>
                 <Button type="primary" onClick={() => showModal(id)}>
@@ -18,20 +20,24 @@ const ChangeProductModal = ({
                 <Modal
                     visible={visible}
                     title="Change product"
-                    onOk={() => handleOk(productIdToChange, title, sellingPrice, purchasePrice, categoryId)}
                     onCancel={handleCancel}
                 >
-                    <Input placeholder="Title" defaultValue={title} onChange={handleChangeTitle}/>
-                    <Input placeholder="Selling price" onChange={handleChangeSellingPrice}/>
-                    <Input placeholder="Purchase price"
-                           onChange={handleChangePurchasePrice}/>
-                    <Select style={{width: 120}} onChange={handleChangeCategory}>
-                        {categories.map(category => {
-                            return (
-                                <Option key={category._id} value={category._id}>{category.title}</Option>
-                            )
-                        })}
-                    </Select>
+                    <form onSubmit={handleSubmit(handleOk)}>
+                        <Field name="title" component="input" type="text" placeholder="title" style={{width: '60%'}}/>
+                        <Field name="sellingPrice" component="input" type="text" placeholder="selling price"
+                               style={{width: '60%'}}/>
+                        <Field name="purchasePrice" component="input" type="text" placeholder="purchase price"
+                               style={{width: '60%'}}/>
+                        <Field name="categoryId" component="select" style={{width: '60%'}}>
+                            {categories.map(category => {
+                                return (
+                                    <option defaultValue={categoryId} key={category._id}
+                                            value={category._id}>{category.title}</option>
+                                )
+                            })}
+                        </Field>
+                        <button type='submit'>Ok</button>
+                    </form>
                 </Modal>
             </>
         );
@@ -42,10 +48,6 @@ const ChangeProductModal = ({
 ChangeProductModal.propTypes = {
     id: PropTypes.string.isRequired,
     categories: PropTypes.array.isRequired,
-    title: PropTypes.string,
-    sellingPrice: PropTypes.string,
-    purchasePrice: PropTypes.string,
-    categoryId: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
     isError: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string.isRequired,
@@ -53,11 +55,11 @@ ChangeProductModal.propTypes = {
     productIdToChange: PropTypes.string,
     showModal: PropTypes.func.isRequired,
     handleCancel: PropTypes.func.isRequired,
-    handleChangeTitle: PropTypes.func.isRequired,
-    handleChangePurchasePrice: PropTypes.func.isRequired,
-    handleChangeSellingPrice: PropTypes.func.isRequired,
-    handleChangeCategory: PropTypes.func.isRequired,
     handleOk: PropTypes.func.isRequired,
 };
+
+ChangeProductModal = reduxForm({
+    form: 'changeProduct',
+})(ChangeProductModal);
 
 export default ChangeProductModal;

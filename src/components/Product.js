@@ -37,7 +37,7 @@ const Product = ({products, isLoading, handleDelete, productsCount, perPage, pag
             render: (text, record, i) => {
                 return (
                     <span>
-         <ChangeProductModal id={text._id}/>
+         <ChangeProductModal id={text._id} categoryId={text.category._id}/>
          <Button type="danger" onClick={() => handleDelete(text._id, text.title)}> Delete </Button>
       </span>
                 )

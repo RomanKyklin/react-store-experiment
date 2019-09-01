@@ -26,26 +26,6 @@ const categoryReducer = (state = initialState, action) => {
                 isError: action.isError,
                 errorMessage: action.errorMessage
             };
-        case SET_TITLE:
-            return {
-                ...state,
-                title: action.title
-            };
-        case SET_SELLING_PRICE:
-            return {
-                ...state,
-                sellingPrice: action.sellingPrice
-            };
-        case SET_PURCHASE_PRICE:
-            return {
-                ...state,
-                purchasePrice: action.purchasePrice
-            };
-        case SET_CATEGORY_ID:
-            return {
-                ...state,
-                categoryId: action.categoryId
-            };
         case SET_LOADING:
             return {
                 ...state,

@@ -1,11 +1,11 @@
 import React from "react";
 import AddCategory from '../components/AddCategory';
 import {connect} from "react-redux";
-import {createCategory, handleChangeTitle} from "../actions";
+import {createCategory, setError} from "../actions";
+import _ from 'lodash';
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        title: state.categoryReducer.title,
         isError: state.categoryReducer.isError,
         errorMessage: state.categoryReducer.errorMessage,
     }
@@ -13,11 +13,15 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleForm: (event) => {
-            event.preventDefault();
-            dispatch(createCategory());
+        handleForm: (values) => {
+            const title = _.get(values, 'title', '');
+
+            if(title) {
+                dispatch(createCategory(title));
+                return;
+            }
+            dispatch(setError(true, 'Поля заполнены некорректно'));
         },
-        handleChangeTitle: (event) => dispatch(handleChangeTitle(event))
     }
 };
 

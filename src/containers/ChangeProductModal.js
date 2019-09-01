@@ -1,21 +1,19 @@
 import {connect} from "react-redux";
 import ChangeProductModal from "../components/ChangeProductModal";
+import get from 'lodash/get';
 import {
-    handleChangeCategory,
-    handleChangePurchasePrice, handleChangeSellingPrice,
-    handleChangeTitle,
+    createProduct,
+    setError,
     setProductIdToChange,
-    setVisible, updateProduct
+    setVisible
 } from "../actions";
+import store from "../store/store";
+import {addOrChangeProduct} from "./AddProduct";
 
 const mapStateToProps = (state, ownProps) => {
     return {
         id: ownProps.id,
         categories: state.productReducer.categories,
-        title: state.productReducer.title,
-        sellingPrice: state.productReducer.sellingPrice,
-        purchasePrice: state.productReducer.purchasePrice,
-        categoryId: state.productReducer.categoryId,
         isLoading: state.productReducer.isLoading,
         isError: state.productReducer.isError,
         errorMessage: state.productReducer.errorMessage,
@@ -33,13 +31,7 @@ const mapDispatchToProps = dispatch => {
         handleCancel: () => {
             dispatch(setVisible(false));
         },
-        handleChangeTitle: (event) => dispatch(handleChangeTitle(event)),
-        handleChangePurchasePrice: (event) => dispatch(handleChangePurchasePrice(event)),
-        handleChangeSellingPrice: (event) => dispatch(handleChangeSellingPrice(event)),
-        handleChangeCategory: (id) => dispatch(handleChangeCategory(id)),
-        handleOk: (productIdToChange, title, sellingPrice, purchasePrice, categoryId) => {
-            dispatch(updateProduct(productIdToChange, title, sellingPrice, purchasePrice, categoryId))
-        }
+        handleOk: (values) => addOrChangeProduct(values, dispatch),
     }
 };
 

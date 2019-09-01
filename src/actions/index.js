@@ -96,9 +96,8 @@ export const fetchProducts = (perPage = 10, page = 1, filterCategoryId = null) =
         });
 };
 
-export const createCategory = () => dispatch => {
+export const createCategory = (title) => dispatch => {
     dispatch(setLoading(true));
-    const title = store.getState().categoryReducer.title;
 
     return axios.post(ADD_CATEGORIES_URL, {title})
         .then(response => {

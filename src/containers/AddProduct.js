@@ -1,9 +1,28 @@
 import {connect} from "react-redux";
 import AddProduct from "../components/AddProduct";
+import get from 'lodash/get';
 import {
-    createProduct, handleChangeCategory, handleChangePurchasePrice, handleChangeSellingPrice, handleChangeTitle,
-    setError,
+    createProduct, setError, updateProduct,
 } from "../actions";
+import store from "../store/store";
+
+export const addOrChangeProduct = (values, dispatch) => {
+    const {productIdToChange = null} = store.getState().productReducer;
+    const title = get(values, 'title', null);
+    const sellingPrice = get(values, 'sellingPrice', null);
+    const purchasePrice = get(values, 'purchasePrice', null);
+    const categoryId = get(values, 'categoryId', null);
+
+    if (title && sellingPrice && purchasePrice && categoryId && !productIdToChange) {
+        dispatch(createProduct(title, sellingPrice, purchasePrice, categoryId));
+        return;
+    }
+    if (title && sellingPrice && purchasePrice && categoryId && productIdToChange) {
+        dispatch(updateProduct(productIdToChange, title, sellingPrice, purchasePrice, categoryId));
+        return;
+    }
+    dispatch(setError(true, 'Поля заполнены некорректно'));
+};
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -20,19 +39,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleChangeTitle: (event) => dispatch(handleChangeTitle(event)),
-        handleChangeSellingPrice: (event) => dispatch(handleChangeSellingPrice(event)),
-        handleChangePurchasePrice: (event) => dispatch(handleChangePurchasePrice(event)),
-        handleChangeCategory: (id) => dispatch(handleChangeCategory(id)),
-        handleForm: (event, title, sellingPrice, purchasePrice, categoryId) => {
-            event.preventDefault();
-            if (title.trim().length === 0 || sellingPrice.trim().length === 0 || purchasePrice.trim().length === 0
-                || categoryId.trim().length === 0) {
-                dispatch(setError(true, 'Поля заполнены некорректно.'));
-                return;
-            }
-            dispatch(createProduct(title, sellingPrice, purchasePrice, categoryId));
-        }
+        handleForm: (values) => addOrChangeProduct(values, dispatch),
     }
 };
 

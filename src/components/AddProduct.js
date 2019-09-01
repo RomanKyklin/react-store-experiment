@@ -3,24 +3,19 @@ import {Form, Input, Button, Col, Row, Select, Alert} from 'antd';
 import PropTypes from 'prop-types';
 import {fetchCategories} from "../actions";
 import {useDispatch} from "react-redux";
+import {Field, reduxForm} from "redux-form";
+import AddCategory from "./AddCategory";
 
 const {Option} = Select;
 
-const AddProduct = ({
-                        categories,
-                        isError,
-                        errorMessage,
-                        isLoading,
-                        title,
-                        sellingPrice,
-                        purchasePrice,
-                        categoryId,
-                        handleChangeTitle,
-                        handleChangeSellingPrice,
-                        handleChangePurchasePrice,
-                        handleChangeCategory,
-                        handleForm
-                    }) => {
+let AddProduct = ({
+                      categories,
+                      isError,
+                      errorMessage,
+                      isLoading,
+                      handleForm,
+                      handleSubmit
+                  }) => {
 
     const dispatch = useDispatch();
 
@@ -42,35 +37,28 @@ const AddProduct = ({
         <Row type="flex" justify="center">
             <Col style={{textAlign: "center"}} span={13}>
                 <Form className="create-product-form"
-                      onSubmit={(event) => handleForm(event, title, sellingPrice, purchasePrice, categoryId)}>
+                      onSubmit={handleSubmit(handleForm)}
+                      style={{padding: '1%'}}>
                     <Form.Item>
-                        <Input
-                            placeholder="title"
-                            onChange={handleChangeTitle}
-                        />
+                        <Field name="title" component="input" type="text" placeholder="title" style={{width: '40%'}}/>
                     </Form.Item>
                     <Form.Item>
-                        <Input
-                            type="number"
-                            placeholder="selling_price"
-                            onChange={handleChangeSellingPrice}
-                        />
+                        <Field name="sellingPrice" component="input" type="text" placeholder="selling price"
+                               style={{width: '40%'}}/>
                     </Form.Item>
                     <Form.Item>
-                        <Input
-                            type="number"
-                            placeholder="purchase_price"
-                            onChange={handleChangePurchasePrice}
-                        />
+                        <Field name="purchasePrice" component="input" type="text" placeholder="purchase price"
+                               style={{width: '40%'}}/>
                     </Form.Item>
                     <Form.Item>
-                        <Select style={{width: 120}} onChange={handleChangeCategory}>
+                        <Field name="categoryId" component="select" style={{width: '40%'}}>
+                            <option></option>
                             {categories.map(category => {
                                 return (
-                                    <Option key={category._id} value={category._id}>{category.title}</Option>
+                                    <option key={category._id} value={category._id}>{category.title}</option>
                                 )
                             })}
-                        </Select>
+                        </Field>
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit" className="login-form-button">
@@ -90,16 +78,12 @@ AddProduct.propTypes = {
     isError: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
-    title: PropTypes.string,
-    sellingPrice: PropTypes.string,
-    purchasePrice: PropTypes.string,
-    categoryId: PropTypes.string,
-    handleChangeTitle: PropTypes.func.isRequired,
-    handleChangeSellingPrice: PropTypes.func.isRequired,
-    handleChangePurchasePrice: PropTypes.func.isRequired,
-    handleChangeCategory: PropTypes.func.isRequired,
     handleForm: PropTypes.func.isRequired
 
 };
+
+AddProduct = reduxForm({
+    form: 'addProduct',
+})(AddProduct);
 
 export default AddProduct;

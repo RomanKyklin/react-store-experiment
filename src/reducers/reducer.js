@@ -1,6 +1,7 @@
 import {combineReducers} from "redux";
 import categoryReducer from './categoryReducer';
 import productReducer from './productReducer';
+import { reducer as formReducer } from 'redux-form'
 
 export const initialState = {
     categories: [],
@@ -8,10 +9,6 @@ export const initialState = {
     isLoading: true,
     products: [],
     errorMessage: '',
-    title: '',
-    sellingPrice: '0',
-    purchasePrice: '',
-    categoryId: '',
     visible: false,
     product: {},
     productIdToChange: '',
@@ -23,5 +20,6 @@ export const initialState = {
 
 export default combineReducers({
     categoryReducer,
-    productReducer
+    productReducer,
+    form: formReducer
 });
