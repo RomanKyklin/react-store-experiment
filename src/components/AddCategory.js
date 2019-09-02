@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Alert, Button, Col, Form, Input, Row} from "antd";
 import PropTypes from "prop-types";
-import {handleChangeTitle} from "../containers/Forms";
+import {handleChangeField} from "../containers/Forms";
 
 const AddCategory = ({isError, errorMessage, handleForm}) => {
     const [title, setTitle] = useState('');
@@ -23,7 +23,7 @@ const AddCategory = ({isError, errorMessage, handleForm}) => {
                     <Form.Item>
                         <Input
                             placeholder="title"
-                            onChange={(event) => handleChangeTitle(event, setTitle)}
+                            onChange={handleChangeField(setTitle)}
                         />
                     </Form.Item>
                     <Form.Item>

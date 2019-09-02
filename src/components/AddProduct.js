@@ -4,10 +4,7 @@ import PropTypes from 'prop-types';
 import {fetchCategories} from "../actions";
 import {useDispatch} from "react-redux";
 import {
-    handleChangeCategory,
-    handleChangePurchasePrice,
-    handleChangeSellingPrice,
-    handleChangeTitle
+    handleChangeCategory, handleChangeField,
 } from "../containers/Forms";
 
 const {Option} = Select;
@@ -49,21 +46,21 @@ const AddProduct = ({
                     <Form.Item>
                         <Input
                             placeholder="title"
-                            onChange={(event) => handleChangeTitle(event, setTitle)}
+                            onChange={handleChangeField(setTitle)}
                         />
                     </Form.Item>
                     <Form.Item>
                         <Input
                             type="number"
                             placeholder="selling_price"
-                            onChange={(event) => handleChangeSellingPrice(event, setSellingPrice)}
+                            onChange={handleChangeField(setSellingPrice)}
                         />
                     </Form.Item>
                     <Form.Item>
                         <Input
                             type="number"
                             placeholder="purchase_price"
-                            onChange={(event) => handleChangePurchasePrice(event, setPurchasePrice)}
+                            onChange={handleChangeField(setPurchasePrice)}
                         />
                     </Form.Item>
                     <Form.Item>

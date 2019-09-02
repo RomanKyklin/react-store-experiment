@@ -2,10 +2,7 @@ import React, {useState} from "react";
 import {Modal, Button, Input, Select} from 'antd';
 import PropTypes from 'prop-types';
 import {
-    handleChangeCategory,
-    handleChangePurchasePrice,
-    handleChangeSellingPrice,
-    handleChangeTitle, handleVisible
+    handleChangeCategory, handleChangeField, handleVisible
 } from "../containers/Forms";
 
 const {Option} = Select;
@@ -33,12 +30,12 @@ const ChangeProductModal = ({
                     onCancel={() => handleVisible(!visible, setVisible)}
                 >
                     <Input placeholder="Title" defaultValue={title}
-                           onChange={(event) => handleChangeTitle(event, setTitle)}/>
+                           onChange={handleChangeField(setTitle)}/>
                     <Input placeholder="Selling price" defaultValue={sellingPrice}
-                           onChange={(event) => handleChangeSellingPrice(event, setSellingPrice)}/>
+                           onChange={handleChangeField(setSellingPrice)}/>
                     <Input placeholder="Purchase price" defaultValue={purchasePrice}
-                           onChange={(event) => handleChangePurchasePrice(event, setPurchasePrice)}/>
-                    <Select style={{width: 120}} onChange={(event) => handleChangeCategory(event, setCategoryId)}
+                           onChange={handleChangeField(setPurchasePrice)}/>
+                    <Select style={{width: 120}} onChange={(id) => handleChangeCategory(id, setCategoryId)}
                             defaultValue={categoryId}>
                         {categories.map(category => {
                             return (
