@@ -41,6 +41,7 @@ exports.delete = (req, res) => {
 
     Category.find({title: "without category"})
         .then(category => {
+            console.log(category);
             if (category) {
                 Product.updateMany({"category": id}, {"$set": {"category": category[0]._id}})
                     .then(() => res.status(200).send({message: "success"}))

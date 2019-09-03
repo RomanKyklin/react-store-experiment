@@ -3,5 +3,5 @@ module.exports = (app) => {
 
     app.get('/api/categories', category.findAll);
     app.post('/api/categories', category.create);
-    app.delete('/api/category', category.delete);
+    app.delete('/api/categories', category.delete);
 };

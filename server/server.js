@@ -1,12 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
+
+const PORT = 4000;
+const MODE = 'PROD';
+const BUILD_PATH = MODE === 'PROD' ? './client/build' : '../client/build';
 
 mongoose.Promise = global.Promise;
 
@@ -20,6 +26,12 @@ mongoose.connect(dbConfig.url, {
     process.exit();
 });
 
+app.use(express.static(path.join(__dirname, BUILD_PATH)));
+
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -27,12 +39,8 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.get('/', (req, res) => {
-    res.json({"message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes."});
-});
-
-app.listen(3000, () => {
-    console.log("Server is listening on port 3000");
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
 });
 
 require('./app/routes/product.routes.js')(app);

@@ -6,8 +6,7 @@ import {
 import axios from "axios";
 import _ from "lodash";
 import {
-    ADD_CATEGORIES_URL, DELETE_CATEGORY,
-    GET_CATEGORIES_URL, GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL,
+    GET_OR_ADD_OR_DELETE_CATEGORIES_URL, GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL,
     GET_OR_DELETE_PRODUCT_URL, GET_PRODUCTS_URL, HOME_URL
 } from "../constants/app-contants";
 import store from "../store/store";
@@ -37,7 +36,7 @@ export const setPerPage = makeActionCreator(SET_PER_PAGE, 'perPage');
 export const fetchCategories = () => dispatch => {
     dispatch(setLoading(true));
 
-    return axios.get(GET_CATEGORIES_URL)
+    return axios.get(GET_OR_ADD_OR_DELETE_CATEGORIES_URL)
         .then(response => {
             const categories = _.get(response, 'data', []);
 
@@ -80,7 +79,7 @@ export const fetchProducts = (perPage = 10, page = 1, filterCategoryId = null) =
 export const createCategory = (title) => dispatch => {
     dispatch(setLoading(true));
 
-    return axios.post(ADD_CATEGORIES_URL, {title})
+    return axios.post(GET_OR_ADD_OR_DELETE_CATEGORIES_URL, {title})
         .then(response => {
             window.location.href = HOME_URL;
         })
@@ -132,7 +131,7 @@ export const deleteCategory = (id, title) => dispatch => {
 
     if (conf) {
         dispatch(setLoading(true));
-        return axios.delete(DELETE_CATEGORY, {data: {id}})
+        return axios.delete(GET_OR_ADD_OR_DELETE_CATEGORIES_URL, {data: {id}})
             .then(res => {
                 window.location.href = HOME_URL;
             })
