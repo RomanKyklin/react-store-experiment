@@ -12,9 +12,7 @@ export const initialState = {
     sellingPrice: '0',
     purchasePrice: '',
     categoryId: '',
-    visible: false,
     product: {},
-    productIdToChange: '',
     productsCount: 0,
     perPage: 10,
     page: 1

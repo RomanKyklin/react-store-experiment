@@ -1,8 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import {Alert, Button, Col, Form, Input, Row} from "antd";
 import PropTypes from "prop-types";
+import {handleChangeField} from "../containers/Forms";
 
-const AddCategory = ({title, isError, errorMessage, handleForm, handleChangeTitle}) => {
+const AddCategory = ({isError, errorMessage, handleForm}) => {
+    const [title, setTitle] = useState('');
+
     if (isError) {
         return (
             <Row type="flex" justify="center">
@@ -16,11 +19,11 @@ const AddCategory = ({title, isError, errorMessage, handleForm, handleChangeTitl
     return (
         <Row type="flex" justify="center">
             <Col style={{textAlign: "center"}} span={13}>
-                <Form className="create-product-form" onSubmit={handleForm}>
+                <Form className="create-product-form" onSubmit={(event) => handleForm(event, title)}>
                     <Form.Item>
                         <Input
                             placeholder="title"
-                            onChange={handleChangeTitle}
+                            onChange={handleChangeField(setTitle)}
                         />
                     </Form.Item>
                     <Form.Item>
@@ -35,11 +38,9 @@ const AddCategory = ({title, isError, errorMessage, handleForm, handleChangeTitl
 };
 
 AddCategory.propTypes = {
-    title: PropTypes.string,
     isError: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string,
     handleForm: PropTypes.func.isRequired,
-    handleChangeTitle: PropTypes.func.isRequired
 };
 
 export default AddCategory;

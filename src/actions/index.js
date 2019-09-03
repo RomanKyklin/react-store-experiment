@@ -1,10 +1,7 @@
 import {
-    SET_CATEGORY, SET_CATEGORY_ID,
-    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_LOADING, SET_PAGE, SET_PER_PAGE, SET_PRODUCT, SET_PRODUCT_ID_TO_CHANGE,
+    SET_CATEGORY,
+    SET_ERROR, SET_LOADING, SET_PAGE, SET_PER_PAGE,
     SET_PRODUCTS, SET_PRODUCTS_COUNT,
-    SET_PURCHASE_PRICE,
-    SET_SELLING_PRICE,
-    SET_TITLE, SET_VISIBLE
 } from "../constants/action-types";
 import axios from "axios";
 import _ from "lodash";
@@ -29,29 +26,13 @@ export const setProducts = makeActionCreator(SET_PRODUCTS, 'products');
 
 export const setError = makeActionCreator(SET_ERROR, 'isError', 'errorMessage');
 
-export const setTitle = makeActionCreator(SET_TITLE, 'title');
-
-export const setSellingPrice = makeActionCreator(SET_SELLING_PRICE, 'sellingPrice');
-
-export const setPurchasePrice = makeActionCreator(SET_PURCHASE_PRICE, 'purchasePrice');
-
-export const setCategoryId = makeActionCreator(SET_CATEGORY_ID, 'categoryId');
-
 export const setLoading = makeActionCreator(SET_LOADING, 'isLoading');
-
-export const setFilteredCategoryId = makeActionCreator(SET_FILTERED_CATEGORY_ID, 'filteredCategoryId');
-
-export const setVisible = makeActionCreator(SET_VISIBLE, 'visible');
-
-export const setProduct = makeActionCreator(SET_PRODUCT, 'product');
 
 export const setPage = makeActionCreator(SET_PAGE, 'page');
 
 export const setProductsCount = makeActionCreator(SET_PRODUCTS_COUNT, 'productsCount');
 
 export const setPerPage = makeActionCreator(SET_PER_PAGE, 'perPage');
-
-export const setProductIdToChange = makeActionCreator(SET_PRODUCT_ID_TO_CHANGE, 'productIdToChange');
 
 export const fetchCategories = () => dispatch => {
     dispatch(setLoading(true));
@@ -96,9 +77,8 @@ export const fetchProducts = (perPage = 10, page = 1, filterCategoryId = null) =
         });
 };
 
-export const createCategory = () => dispatch => {
+export const createCategory = (title) => dispatch => {
     dispatch(setLoading(true));
-    const title = store.getState().categoryReducer.title;
 
     return axios.post(ADD_CATEGORIES_URL, {title})
         .then(response => {
@@ -138,33 +118,14 @@ export const updateProduct = (productIdToChange, title, sellingPrice, purchasePr
         category: categoryId
     })
         .then(() => {
-            dispatch(setVisible(false));
             dispatch(setLoading(false));
             window.location.href = HOME_URL;
         })
         .catch(err => {
             dispatch(setLoading(false));
-            dispatch(setVisible(false));
             dispatch(setError(true, ''));
         })
 };
-
-export const handleChangeTitle = (event) => dispatch => {
-    let title = _.get(event, 'target.value', '');
-    dispatch(setTitle(title));
-};
-
-export const handleChangePurchasePrice = (event) => dispatch => {
-    const purchasePrice = _.get(event, 'target.value', '');
-    dispatch(setPurchasePrice(purchasePrice));
-};
-
-export const handleChangeSellingPrice = (event) => dispatch => {
-    const sellingPrice = _.get(event, 'target.value', '');
-    dispatch(setSellingPrice(sellingPrice));
-};
-
-export const handleChangeCategory = (id) => dispatch => dispatch(setCategoryId(id));
 
 export const deleteCategory = (id, title) => dispatch => {
     const conf = window.confirm(`Вы действительно хотите удалить категорию с названием - '${title}' ?`);

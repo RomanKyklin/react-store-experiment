@@ -1,7 +1,7 @@
 import React from "react";
 import AddCategory from '../components/AddCategory';
 import {connect} from "react-redux";
-import {createCategory, handleChangeTitle} from "../actions";
+import {createCategory} from "../actions";
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -13,11 +13,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleForm: (event) => {
+        handleForm: (event, title) => {
             event.preventDefault();
-            dispatch(createCategory());
+            dispatch(createCategory(title));
         },
-        handleChangeTitle: (event) => dispatch(handleChangeTitle(event))
     }
 };
 

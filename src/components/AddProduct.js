@@ -1,8 +1,11 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Form, Input, Button, Col, Row, Select, Alert} from 'antd';
 import PropTypes from 'prop-types';
 import {fetchCategories} from "../actions";
 import {useDispatch} from "react-redux";
+import {
+    handleChangeCategory, handleChangeField,
+} from "../containers/Forms";
 
 const {Option} = Select;
 
@@ -11,18 +14,15 @@ const AddProduct = ({
                         isError,
                         errorMessage,
                         isLoading,
-                        title,
-                        sellingPrice,
-                        purchasePrice,
-                        categoryId,
-                        handleChangeTitle,
-                        handleChangeSellingPrice,
-                        handleChangePurchasePrice,
-                        handleChangeCategory,
                         handleForm
                     }) => {
 
     const dispatch = useDispatch();
+
+    const [title, setTitle] = useState('');
+    const [sellingPrice, setSellingPrice] = useState('');
+    const [purchasePrice, setPurchasePrice] = useState('');
+    const [categoryId, setCategoryId] = useState('');
 
     useEffect(() => {
         dispatch(fetchCategories());
@@ -46,25 +46,25 @@ const AddProduct = ({
                     <Form.Item>
                         <Input
                             placeholder="title"
-                            onChange={handleChangeTitle}
+                            onChange={handleChangeField(setTitle)}
                         />
                     </Form.Item>
                     <Form.Item>
                         <Input
                             type="number"
                             placeholder="selling_price"
-                            onChange={handleChangeSellingPrice}
+                            onChange={handleChangeField(setSellingPrice)}
                         />
                     </Form.Item>
                     <Form.Item>
                         <Input
                             type="number"
                             placeholder="purchase_price"
-                            onChange={handleChangePurchasePrice}
+                            onChange={handleChangeField(setPurchasePrice)}
                         />
                     </Form.Item>
                     <Form.Item>
-                        <Select style={{width: 120}} onChange={handleChangeCategory}>
+                        <Select style={{width: 120}} onChange={(id) => handleChangeCategory(id, setCategoryId)}>
                             {categories.map(category => {
                                 return (
                                     <Option key={category._id} value={category._id}>{category.title}</Option>
@@ -94,10 +94,6 @@ AddProduct.propTypes = {
     sellingPrice: PropTypes.string,
     purchasePrice: PropTypes.string,
     categoryId: PropTypes.string,
-    handleChangeTitle: PropTypes.func.isRequired,
-    handleChangeSellingPrice: PropTypes.func.isRequired,
-    handleChangePurchasePrice: PropTypes.func.isRequired,
-    handleChangeCategory: PropTypes.func.isRequired,
     handleForm: PropTypes.func.isRequired
 
 };
