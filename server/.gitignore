@@ -10,6 +10,7 @@
 
 # production
 /build
+/client
 .idea/
 # misc
 .DS_Store

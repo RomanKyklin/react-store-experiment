@@ -5,7 +5,9 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./client:/usr/src/backend-app/client
+      - client:/usr/src/backend-app/client
+      - /usr/src/backend-app/client/node_modules
+      - /usr/src/backend-app/client/build
 
   server:
     build: ./server
@@ -13,7 +15,8 @@ services:
       - 4000:4000
     volumes:
       - ./server:/usr/src/backend-app
-      - ./client:/usr/src/backend-app/client
+      - /usr/src/backend-app/node_modules
+      - client:/usr/src/backend-app/client
     depends_on:
       - mongo
 
@@ -23,4 +26,4 @@ services:
     ports:
       - "27017:27017"
 volumes:
-  build:
+  client: {}
