@@ -1,3 +1,3 @@
 module.exports = {
-    url: 'mongodb://mongo:27017/easy-notes'
+    url: process.env.MODE === 'PRODUCTION' ? process.env.database_prod : process.env.database_local
 };
