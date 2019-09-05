@@ -5,5 +5,5 @@ module.exports = (app) => {
     const auth = require('../controllers/auth.controller');
 
     app.get('/logout', auth.logout);
-    app.post('/login', passport.authenticate("local-login", {failureRedirect: "/"}), auth.login);
+    app.post('/login', passport.authenticate("local-login", {failureRedirect: "/client/login"}), auth.login);
 };

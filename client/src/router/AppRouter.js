@@ -10,10 +10,10 @@ export default () => {
     return (
         <Router>
             <div>
-                <Route path="/login" component={Auth} />
-                <Route exact path="/" component={Home}/>
-                <Route path="/add-product" component={AddProduct}/>
-                <Route path="/add-category" component={AddCategory} />
+                <Route path="/client/login" component={Auth} />
+                <Route exact path="/client" component={Home}/>
+                <Route path="/client/add-product" component={AddProduct}/>
+                <Route path="/client/add-category" component={AddCategory} />
             </div>
         </Router>
     );

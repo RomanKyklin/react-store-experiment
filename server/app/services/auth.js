@@ -3,7 +3,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const userModel = require('../models/user.model');
 const bcrypt = require('bcrypt-nodejs');
 
-exports.isLoggedIn = (req, res, next) => req.isAuthenticated() ? next() : res.sendStatus(401);
+exports.isLoggedIn = (req, res, next) => req.isAuthenticated() || req.path === '/client/login' ? next() : res.sendStatus(401);
 
 
 passport.serializeUser((user, done) => {
@@ -13,7 +13,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
     userModel.findById(id)
         .then(user => {
-            if(user) {
+            if (user) {
                 done(null, user)
             }
         });

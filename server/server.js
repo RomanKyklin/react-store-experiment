@@ -40,8 +40,8 @@ mongoose.connect(dbConfig.url, {
 
 app.use(express.static(path.join(__dirname, BUILD_PATH)));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+app.get('/client*', isLoggedIn, (req, res) => {
+    res.sendFile(path.join(__dirname, BUILD_PATH, 'index.html'));
 });
 
 app.use((req, res, next) => {
