@@ -38,6 +38,10 @@ mongoose.connect(dbConfig.url, {
     process.exit();
 });
 
+app.get('/', isLoggedIn, (req, res) => {
+    res.redirect('/client');
+});
+
 app.use(express.static(path.join(__dirname, BUILD_PATH)));
 
 app.get('/client*', isLoggedIn, (req, res) => {

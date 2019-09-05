@@ -10,8 +10,8 @@ export default () => {
     return (
         <Router>
             <div>
-                <Route path="/client/login" component={Auth} />
                 <Route exact path="/client" component={Home}/>
+                <Route path="/client/login" component={Auth} />
                 <Route path="/client/add-product" component={AddProduct}/>
                 <Route path="/client/add-category" component={AddCategory} />
             </div>
