@@ -72,7 +72,8 @@ const Product = ({products, isLoading, handleDelete, productsCount, perPage, pag
             <Row>
                 <Col>
                     <Pagination defaultCurrent={page} total={productsCount} pageSize={perPage}
-                                onChange={(page, pageSize) => dispatch(handlePageChange(page, pageSize))}/>
+                                onChange={(page, pageSize) => dispatch(handlePageChange(page, pageSize))}
+                                style={{marginTop: '1%'}}/>
                 </Col>
             </Row>
         </>

@@ -1,8 +1,10 @@
 exports.login = (req, res) => {
-    return res.redirect("/client");
+    return res.send({
+        success: true
+    });
 };
 
 exports.logout = (req, res) => {
     req.logout();
-    return res.send("logout success!");
+    return res.redirect('/login');
 };

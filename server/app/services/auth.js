@@ -3,7 +3,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const userModel = require('../models/user.model');
 const bcrypt = require('bcrypt-nodejs');
 
-exports.isLoggedIn = (req, res, next) => req.isAuthenticated() || req.path === '/client/login' ? next() : res.redirect('/client/login');
+exports.isLoggedIn = (req, res, next) => req.isAuthenticated() || req.path === '/login' ? next() : res.redirect('/login');
 
 
 passport.serializeUser((user, done) => {

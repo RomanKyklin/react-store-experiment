@@ -1,11 +1,12 @@
 import {combineReducers} from "redux";
 import categoryReducer from './categoryReducer';
 import productReducer from './productReducer';
+import authReducer from './authReducer';
 
 export const initialState = {
     categories: [],
     isError: false,
-    isLoading: true,
+    isLoading: false,
     products: [],
     errorMessage: '',
     title: '',
@@ -21,5 +22,6 @@ export const initialState = {
 
 export default combineReducers({
     categoryReducer,
-    productReducer
+    productReducer,
+    authReducer
 });

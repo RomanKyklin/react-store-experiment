@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.use(session({
-    secret: "tHiSiSasEcRetStr",
+    secret: process.env.session_secret,
     resave: true,
     saveUninitialized: true
 }));
@@ -23,7 +23,7 @@ app.use(passport.session());
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 const BUILD_PATH = process.env.MODE === 'PRODUCTION' ? './client/build' : '../client/build';
 
 mongoose.Promise = global.Promise;
@@ -38,13 +38,9 @@ mongoose.connect(dbConfig.url, {
     process.exit();
 });
 
-app.get('/', isLoggedIn, (req, res) => {
-    res.redirect('/client');
-});
-
 app.use(express.static(path.join(__dirname, BUILD_PATH)));
 
-app.get('/client*', isLoggedIn, (req, res) => {
+app.get('/', isLoggedIn, (req, res) => {
     res.sendFile(path.join(__dirname, BUILD_PATH, 'index.html'));
 });
 
