@@ -1,16 +1,13 @@
 import React from "react";
 import Auth from '../components/Auth';
 import {connect} from "react-redux";
-import axios from "axios";
-import {handleAuthForm, setError, setLoading} from "../actions";
-import {HOME_URL} from "../constants/app-contants";
+import {handleAuthForm} from "../actions";
 
 const mapStateToProps = (state, ownProps) => {
     return {
         isError: state.authReducer.isError,
         errorMessage: state.authReducer.errorMessage,
         isLoading: state.authReducer.isLoading,
-        isAuth: state.authReducer.isAuth
     }
 };
 

@@ -191,10 +191,9 @@ export const handleAuthForm = (username, password, event) => dispatch => {
 
 export const isAuth = () => dispatch => {
     const isAuth = store.getState().authReducer.isAuth;
-    console.log(isAuth);
 
     if(!isAuth) {
+        dispatch(setError(true, 'You are not authorized!'));
         window.location.href = '/login';
     }
-    return isAuth;
 };

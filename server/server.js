@@ -42,6 +42,7 @@ require('./app/routes/category.routes')(app);
 const renderIndexHTML = (request, response) => {
     // get the html file created with the create-react-app build
     const indexHTMLPath = path.resolve(__dirname, process.env.build_path, 'index.html');
+    const isAuth = request.isAuthenticated();
 
     fs.readFile(indexHTMLPath, 'utf8', (err, htmlData) => {
         if (err) {
@@ -49,7 +50,7 @@ const renderIndexHTML = (request, response) => {
             return response.status(404).end()
         }
 
-        return response.send(htmlData.replace('__INITIAL_STATE__={}', `__INITIAL_STATE__ = {isAuth: true}`));
+        return response.send(htmlData.replace('__INITIAL_STATE__={}', `__INITIAL_STATE__={isAuth:${isAuth}}`));
     });
 };
 

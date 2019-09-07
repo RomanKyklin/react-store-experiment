@@ -1,10 +1,17 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Alert, Button, Col, Form, Input, Row} from "antd";
 import PropTypes from "prop-types";
 import {handleChangeField} from "../containers/Forms";
+import {useDispatch} from "react-redux";
+import {isAuth} from "../actions";
 
 const AddCategory = ({isError, errorMessage, handleForm}) => {
     const [title, setTitle] = useState('');
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(isAuth());
+    }, []);
 
     if (isError) {
         return (

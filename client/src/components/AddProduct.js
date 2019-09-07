@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Form, Input, Button, Col, Row, Select, Alert} from 'antd';
 import PropTypes from 'prop-types';
-import {fetchCategories} from "../actions";
+import {fetchCategories, isAuth} from "../actions";
 import {useDispatch} from "react-redux";
 import {
     handleChangeCategory, handleChangeField,
@@ -25,6 +25,7 @@ const AddProduct = ({
     const [categoryId, setCategoryId] = useState('');
 
     useEffect(() => {
+        dispatch(isAuth());
         dispatch(fetchCategories());
     }, []);
 

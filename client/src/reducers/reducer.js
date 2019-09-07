@@ -3,6 +3,12 @@ import categoryReducer from './categoryReducer';
 import productReducer from './productReducer';
 import authReducer from './authReducer';
 
+// Grab the state from a global variable injected into the server-generated HTML
+const preloadedState = window.__INITIAL_STATE__;
+
+// Allow the passed state to be garbage-collected
+delete window.__INITIAL_STATE__;
+
 export const initialState = {
     categories: [],
     isError: false,
@@ -17,9 +23,8 @@ export const initialState = {
     productsCount: 0,
     perPage: 10,
     page: 1,
-    isAuth: false
+    isAuth: preloadedState.isAuth || false
 };
-
 
 export default combineReducers({
     categoryReducer,
