@@ -16,7 +16,8 @@ export const initialState = {
     product: {},
     productsCount: 0,
     perPage: 10,
-    page: 1
+    page: 1,
+    isAuth: false
 };
 
 

@@ -7,15 +7,13 @@ import Auth from "../containers/Auth";
 
 
 export default () => {
-    const isAuth = localStorage.getItem('isAuth') === 'true';
-
     return (
         <Router>
             <div>
-                <Route exact path="/" render={() => isAuth ? <Home/> : <Redirect to="/login"/>}/>
-                <Route path="/add-product" render={() => isAuth ? <AddProduct/> : <Redirect to="/login"/>}/>
-                <Route path="/add-category" render={() => isAuth ? <AddCategory/> : <Redirect to="/login"/>} />
-                <Route path="/login" render={() => isAuth ? <Redirect to="/"/> : <Auth/> } />
+                <Route exact path="/" component={Home}/>
+                <Route path="/add-product" component={AddProduct}/>
+                <Route path="/add-category" component={AddCategory} />
+                <Route path="/login" component={Auth} />
             </div>
         </Router>
     );

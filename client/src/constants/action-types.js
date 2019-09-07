@@ -7,3 +7,4 @@ export const SET_PRODUCT_ID_TO_CHANGE = 'SET_PRODUCT_ID_TO_CHANGE';
 export const SET_PRODUCTS_COUNT = 'SET_PRODUCTS_COUNT';
 export const SET_PER_PAGE = 'SET_PER_PAGE';
 export const SET_PAGE = 'SET_PAGE';
+export const SET_IS_AUTH = 'SET_IS_AUTH';

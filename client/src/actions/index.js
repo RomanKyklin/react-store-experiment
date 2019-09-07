@@ -1,6 +1,6 @@
 import {
     SET_CATEGORY,
-    SET_ERROR, SET_LOADING, SET_PAGE, SET_PER_PAGE,
+    SET_ERROR, SET_IS_AUTH, SET_LOADING, SET_PAGE, SET_PER_PAGE,
     SET_PRODUCTS, SET_PRODUCTS_COUNT,
 } from "../constants/action-types";
 import axios from "axios";
@@ -32,6 +32,8 @@ export const setPage = makeActionCreator(SET_PAGE, 'page');
 export const setProductsCount = makeActionCreator(SET_PRODUCTS_COUNT, 'productsCount');
 
 export const setPerPage = makeActionCreator(SET_PER_PAGE, 'perPage');
+
+export const setIsAuth = makeActionCreator(SET_IS_AUTH, 'isAuth');
 
 export const fetchCategories = () => dispatch => {
     dispatch(setLoading(true));
@@ -169,4 +171,30 @@ export const fetchProductsByCategory = (id) => dispatch => {
 
 export const handlePageChange = (page, pageSize) => dispatch => {
     dispatch(fetchProducts(pageSize, page));
+};
+
+export const handleAuthForm = (username, password, event) => dispatch => {
+    event.preventDefault();
+    dispatch(setLoading(true));
+    axios.post('/login', {username, password})
+        .then(response => {
+            dispatch(setIsAuth(true));
+            window.location.href = HOME_URL;
+        })
+        .then(() => dispatch(setLoading(false)))
+        .catch(error => {
+            dispatch(setError(true, 'Incorrect data!'));
+            dispatch(setLoading(false));
+            console.log(error);
+        });
+};
+
+export const isAuth = () => dispatch => {
+    const isAuth = store.getState().authReducer.isAuth;
+    console.log(isAuth);
+
+    if(!isAuth) {
+        window.location.href = '/login';
+    }
+    return isAuth;
 };

@@ -7,7 +7,7 @@ Local start without docker:
 
 3) go to the server folder and run npm install 
 
-4) in the .env file change mode to "DEVELOPMENT" and run node server.js or nodemon server.js
+4) in the .env file change mode to "DEVELOPMENT" and run node index.js or nodemon index.js
 
 5) The project will run at localhost:4000
 
