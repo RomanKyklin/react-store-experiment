@@ -42,7 +42,7 @@ exports.delete = (req, res) => {
     Category.find({title: "without category"})
         .then(categories => {
             if (categories.length > 0) {
-                Product.updateMany({"category": id}, {"$set": {"category": category[0]._id}})
+                Product.updateMany({"category": id}, {"$set": {"category": categories[0]._id}})
                     .then(() => res.status(200).send({message: "success"}))
                     .catch(err => res.status(400).send({message: err.message}));
             }
