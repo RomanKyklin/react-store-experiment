@@ -8,4 +8,4 @@ COPY package.json /usr/src/backend-app
 
 RUN npm install
 
-CMD ["node", "server.js"]
+CMD ["npm", "run-script", "run-prod"]

@@ -35,9 +35,11 @@ mongoose.connect(dbConfig.url, {
     console.log('Could not connect to the database. Exiting now...', err);
     process.exit();
 });
+
 require('./app/routes/auth.routes')(app);
 require('./app/routes/product.routes.js')(app);
 require('./app/routes/category.routes')(app);
+require('./app/routes/user.routes')(app);
 
 const renderIndexHTML = (request, response) => {
     // get the html file created with the create-react-app build
