@@ -1,33 +1,36 @@
 const Category = require('../models/category.model');
 const Product = require('../models/product.model');
+const categoryService = require('../services/category.service');
+const _ = require("lodash");
 
-exports.findAll = (req, res) => {
-    Category
-        .find()
-        .then(categories => res.send(categories))
-        .catch(error => res.status(500).send({
-            message: error.message || "Some error occurred while retrieving notes."
-        }));
+exports.findAll = async (req, res) => {
+    try {
+        const categories = await categoryService.getCategories();
+        return res.send(categories);
+    } catch (e) {
+        return res.status(500).send({
+            message: error.message || "Some error occurred while retrieving categories."
+        })
+    }
 };
 
-exports.create = (req, res) => {
-    if (!req.body.title) {
+exports.create = async (req, res) => {
+    const title = _.get(req.body, 'title', null);
+
+    if (!title) {
         return res.status(400).send({
             message: "Category title can not be empty"
         });
     }
-    const category = new Category({
-        title: req.body.title,
-    });
 
-    category.save()
-        .then(data => {
-            res.send(data);
-        }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the Note."
-        });
-    });
+    try {
+        const category = await categoryService.createCategory(title);
+        return res.send(category);
+    } catch (e) {
+        return res.status(500).send({
+            message: err.message || "Some error occurred while creating the category."
+        })
+    }
 };
 
 exports.delete = (req, res) => {

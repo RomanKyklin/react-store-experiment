@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import ChangeProductModal from "../containers/ChangeProductModal";
 import Button from "antd/es/button";
 
-const Product = ({products, isLoading, handleDelete, productsCount, perPage, page, handlePageChange}) => {
+const Product = ({products, isLoading, handleDelete, productsCount, perPage, page, handlePageChange, filteredCategoryId}) => {
 
     const dispatch = useDispatch();
 
@@ -72,7 +72,7 @@ const Product = ({products, isLoading, handleDelete, productsCount, perPage, pag
             <Row>
                 <Col>
                     <Pagination defaultCurrent={page} total={productsCount} pageSize={perPage}
-                                onChange={(page, pageSize) => dispatch(handlePageChange(page, pageSize))}
+                                onChange={(page, pageSize) => dispatch(handlePageChange(page, pageSize, filteredCategoryId))}
                                 style={{marginTop: '1%'}}/>
                 </Col>
             </Row>
@@ -82,6 +82,7 @@ const Product = ({products, isLoading, handleDelete, productsCount, perPage, pag
 
 Product.propTypes = {
     products: PropTypes.array.isRequired,
+    filteredCategoryId: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
     productsCount: PropTypes.number.isRequired,
     handleDelete: PropTypes.func.isRequired,

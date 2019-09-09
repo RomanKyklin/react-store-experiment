@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const Product = require('../models/product.model.js');
 const Category = require('../models/category.model');
+const productService = require('../services/product.service');
 
 exports.find = (req, res) => {
     if (!req.query.id) {
@@ -31,51 +32,39 @@ exports.find = (req, res) => {
         })
 };
 
-exports.findAll = (req, res) => {
+exports.findAll = async (req, res) => {
     const page = parseInt(_.get(req.query, 'page', 1));
     const perPage = parseInt(_.get(req.query, 'perPage', 10));
     const filterCategoryId = _.get(req.query, 'filterCategoryId', null);
+    console.log(filterCategoryId);
+    try {
+        if (filterCategoryId) {
+            const products = await productService.getProducts({category: filterCategoryId}, perPage, page);
+            const productCount = await productService.getProductsCount({category: filterCategoryId});
 
-    Product.count()
-        .then(count => {
-            if (filterCategoryId) {
-                Product.find({category: filterCategoryId})
-                    .populate('category')
-                    .skip((perPage * page) - perPage)
-                    .limit(perPage)
-                    .then(products => {
-                        return res.send({
-                            products,
-                            page,
-                            pagesCount: Math.ceil(products.length / perPage),
-                            total: products.length
-                        })
-                    })
-                    .catch((error) => {
-                        res.status(500).send({
-                            message: error.message || "Some error occurred while retrieving notes."
-                        });
-                    })
-            } else {
-                Product.find()
-                    .populate('category')
-                    .skip((perPage * page) - perPage)
-                    .limit(perPage)
-                    .then(products => {
-                        return res.send({
-                            products,
-                            page,
-                            pagesCount: Math.ceil(count / perPage),
-                            total: count
-                        })
-                    })
-                    .catch((error) => {
-                        res.status(500).send({
-                            message: error.message || "Some error occurred while retrieving notes."
-                        });
-                    })
-            }
+            return res.send({
+                products,
+                page,
+                pagesCount: Math.ceil(productCount / perPage),
+                total: productCount
+            })
+        } else {
+            const products = await productService.getProducts({}, perPage, page);
+            const productCount = await productService.getProductsCount();
+
+            return res.send({
+                products,
+                page,
+                pagesCount: Math.ceil(productCount / perPage),
+                total: productCount
+            })
+        }
+
+    } catch (e) {
+        res.status(500).send({
+            message: e.message || "Some error occurred while retrieving products."
         });
+    }
 };
 
 exports.create = (req, res) => {
