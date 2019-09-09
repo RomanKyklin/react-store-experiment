@@ -9,23 +9,19 @@ exports.create = (req, res) => {
 
     if (!username || !email || !password) {
         return res.status(400).send({
-            message: "Product content can not be empty"
+            message: "User content can not be empty"
         });
     }
 
     const user = new userModel({
-        username: username,
-        email: email,
+        username,
+        email,
         password: bcrypt.hashSync(password),
     });
 
     user.save()
-        .then(data => {
-            res.send(data);
-        }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the product."
-        });
-    });
-
+        .then(data => res.send(data))
+        .catch(err => res.status(500).send({
+            message: err.message || "Some error occurred while creating the user."
+        }));
 };
