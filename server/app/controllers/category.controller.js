@@ -1,6 +1,5 @@
-const Category = require('../models/category.model');
-const Product = require('../models/product.model');
 const categoryService = require('../services/category.service');
+const productService = require('../services/product.service');
 const _ = require("lodash");
 
 exports.findAll = async (req, res) => {
@@ -33,7 +32,7 @@ exports.create = async (req, res) => {
     }
 };
 
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
     const {id = ''} = req.body;
 
     if (!id) {
@@ -42,34 +41,20 @@ exports.delete = (req, res) => {
         });
     }
 
-    Category.find({title: "without category"})
-        .then(categories => {
-            if (categories.length > 0) {
-                Product.updateMany({"category": id}, {"$set": {"category": categories[0]._id}})
-                    .then(() => res.status(200).send({message: "success"}))
-                    .catch(err => res.status(400).send({message: err.message}));
-            }
+    try {
+        const categories = await categoryService.getCategories({title: "without category"});
+        const withoutCategory = categories.length > 0 ? categories[0] : await categoryService.createCategory('without category');
+
+        await productService.updateMany({"category": id}, {"$set": {"category": withoutCategory._id}});
+        await categoryService.deleteCategory(id);
+
+        return res.status(200).send({
+            message: "Category removed successfully with id " + id
+        });
+
+    } catch (e) {
+        return res.status(500).send({
+            message: e.message || "Error deleting product with id " + id
         })
-        .then(() => Category.findByIdAndDelete(id)
-            .then(category => {
-                if (!category) {
-                    return res.status(404).send({
-                        message: "Category not found with id " + id
-                    });
-                }
-            })
-            .then(() => res.status(200).send({
-                message: "Category removed successfully with id " + id
-            }))
-            .catch(err => {
-                if (err.kind === 'ObjectId') {
-                    return res.status(404).send({
-                        message: "Category not found with id " + id
-                    });
-                }
-                return res.status(500).send({
-                    message: "Error deleting product with id " + id
-                });
-            }))
-        .catch(err => res.status(400).send({err: err.message}));
+    }
 };

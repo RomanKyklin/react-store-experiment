@@ -30,5 +30,9 @@ exports.createCategory = title => {
 };
 
 exports.deleteCategory = id => {
-    
+    try {
+        return Category.findByIdAndDelete(id);
+    } catch (e) {
+        throw Error("Some error occurred while deleting the category with id " + id);
+    }
 };

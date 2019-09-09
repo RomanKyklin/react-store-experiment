@@ -94,3 +94,11 @@ exports.deleteProduct = id => {
         throw Error("Error deleting product with id " + id);
     }
 };
+
+exports.updateMany = (params, query) => {
+    try {
+        return Product.updateMany(params, query);
+    } catch (e) {
+        throw Error("Error updating products");
+    }
+};
