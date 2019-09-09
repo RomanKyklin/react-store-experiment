@@ -11,6 +11,7 @@ delete window.__INITIAL_STATE__;
 
 export const initialState = {
     categories: [],
+    filteredCategoryId: null,
     isError: false,
     isLoading: false,
     products: [],

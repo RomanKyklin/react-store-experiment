@@ -1,6 +1,6 @@
 import {
     SET_CATEGORY,
-    SET_ERROR, SET_IS_AUTH, SET_LOADING, SET_PAGE, SET_PER_PAGE,
+    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_IS_AUTH, SET_LOADING, SET_PAGE, SET_PER_PAGE,
     SET_PRODUCTS, SET_PRODUCTS_COUNT,
 } from "../constants/action-types";
 import axios from "axios";
@@ -35,6 +35,8 @@ export const setPerPage = makeActionCreator(SET_PER_PAGE, 'perPage');
 
 export const setIsAuth = makeActionCreator(SET_IS_AUTH, 'isAuth');
 
+export const setFilteredCategoryId = makeActionCreator(SET_FILTERED_CATEGORY_ID, 'filteredCategoryId');
+
 export const fetchCategories = () => dispatch => {
     dispatch(setLoading(true));
 
@@ -67,6 +69,7 @@ export const fetchProducts = (perPage = 10, page = 1, filterCategoryId = null) =
             }
             dispatch(setProducts(products));
             dispatch(setProductsCount(productsCount));
+            dispatch(setFilteredCategoryId(filterCategoryId));
             dispatch(setPerPage(perPage));
             dispatch(setPage(page));
         })
@@ -169,8 +172,8 @@ export const fetchProductsByCategory = (id) => dispatch => {
     dispatch(fetchProducts(10, 1, id));
 };
 
-export const handlePageChange = (page, pageSize) => dispatch => {
-    dispatch(fetchProducts(pageSize, page));
+export const handlePageChange = (page, pageSize, filteredCategoryId) => dispatch => {
+    dispatch(fetchProducts(pageSize, page, filteredCategoryId));
 };
 
 export const handleAuthForm = (username, password, event) => dispatch => {

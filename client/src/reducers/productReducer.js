@@ -1,7 +1,15 @@
 import {initialState} from "./reducer";
 import {
-    SET_CATEGORY, SET_ERROR, SET_LOADING, SET_PAGE, SET_PER_PAGE, SET_PRODUCT, SET_PRODUCT_ID_TO_CHANGE,
-    SET_PRODUCTS, SET_PRODUCTS_COUNT,
+    SET_CATEGORY,
+    SET_ERROR,
+    SET_FILTERED_CATEGORY_ID,
+    SET_LOADING,
+    SET_PAGE,
+    SET_PER_PAGE,
+    SET_PRODUCT,
+    SET_PRODUCT_ID_TO_CHANGE,
+    SET_PRODUCTS,
+    SET_PRODUCTS_COUNT,
 } from "../constants/action-types";
 
 const productReducer = (state = initialState, action) => {
@@ -51,6 +59,11 @@ const productReducer = (state = initialState, action) => {
             return {
                 ...state,
                 page: action.page
+            };
+        case SET_FILTERED_CATEGORY_ID:
+            return {
+                ...state,
+                filteredCategoryId: action.filteredCategoryId
             };
         default:
             return {
