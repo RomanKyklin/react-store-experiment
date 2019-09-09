@@ -26,11 +26,10 @@ exports.findAll = async (req, res) => {
     const filterCategoryId = _.get(req.query, 'filterCategoryId', null);
 
     try {
-        const products = filterCategoryId ? await productService.getProducts({category: filterCategoryId}, perPage, page)
-            : await productService.getProducts({}, perPage, page);
-        const productCount = filterCategoryId ? await productService.getProductsCount({category: filterCategoryId})
-            : await productService.getProductsCount();
-
+        const filter = filterCategoryId ? {category: filterCategoryId} : {};
+        const products = await productService.getProducts(filter, perPage, page);
+        const productCount = await productService.getProductsCount(filter);
+        
         return res.send({
             products,
             page,

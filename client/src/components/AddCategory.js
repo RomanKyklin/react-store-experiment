@@ -4,14 +4,21 @@ import PropTypes from "prop-types";
 import {handleChangeField} from "../containers/Forms";
 import {useDispatch} from "react-redux";
 import {isAuth} from "../actions";
+import Home from "./Home";
+import {redirect} from "../containers/Forms";
+import {ADD_CATEGORY_CLIENT_URL, HOME_URL} from "../constants/app-contants";
 
-const AddCategory = ({isError, errorMessage, handleForm}) => {
+const AddCategory = ({isError, errorMessage, handleForm, isRedirect}) => {
     const [title, setTitle] = useState('');
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(isAuth());
     }, []);
+
+    if (isRedirect) {
+        return redirect(ADD_CATEGORY_CLIENT_URL, HOME_URL, Home);
+    }
 
     if (isError) {
         return (
@@ -48,6 +55,7 @@ AddCategory.propTypes = {
     isError: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string,
     handleForm: PropTypes.func.isRequired,
+    redirect: PropTypes.func.isRequired,
 };
 
 export default AddCategory;

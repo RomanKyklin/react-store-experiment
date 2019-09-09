@@ -21,6 +21,7 @@ export const initialState = {
     purchasePrice: '',
     categoryId: '',
     product: {},
+    isRedirect: false,
     productsCount: 0,
     perPage: 10,
     page: 1,

@@ -14,7 +14,8 @@ const mapStateToProps = (state, ownProps) => {
         title: state.productReducer.title,
         sellingPrice: state.productReducer.sellingPrice,
         purchasePrice: state.productReducer.purchasePrice,
-        categoryId: state.productReducer.categoryId
+        categoryId: state.productReducer.categoryId,
+        isRedirect: state.productReducer.isRedirect
     }
 };
 

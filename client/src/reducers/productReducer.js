@@ -2,7 +2,7 @@ import {initialState} from "./reducer";
 import {
     SET_CATEGORY,
     SET_ERROR,
-    SET_FILTERED_CATEGORY_ID,
+    SET_FILTERED_CATEGORY_ID, SET_IS_REDIRECT,
     SET_LOADING,
     SET_PAGE,
     SET_PER_PAGE,
@@ -64,6 +64,11 @@ const productReducer = (state = initialState, action) => {
             return {
                 ...state,
                 filteredCategoryId: action.filteredCategoryId
+            };
+        case SET_IS_REDIRECT:
+            return {
+                ...state,
+                isRedirect: action.isRedirect
             };
         default:
             return {

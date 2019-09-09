@@ -1,12 +1,17 @@
 import React, {useState} from 'react';
 import {Form, Icon, Input, Button, Row, Col, Alert, Spin} from 'antd';
-import {handleChangeField} from "../containers/Forms";
+import {handleChangeField, redirect} from "../containers/Forms";
 import PropTypes from "prop-types";
+import {HOME_URL, LOGIN_URL} from "../constants/app-contants";
+import Home from "./Home";
 
-const Auth = ({handleForm, isError, errorMessage, isLoading}) => {
+const Auth = ({handleForm, isError, errorMessage, isLoading, isRedirect}) => {
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
 
+    if(isRedirect) {
+        return redirect(LOGIN_URL, HOME_URL, Home);
+    }
 
     if (isLoading) {
         return (
@@ -62,7 +67,8 @@ Auth.propTypes = {
     handleForm: PropTypes.func.isRequired,
     isError: PropTypes.bool,
     errorMessage: PropTypes.string,
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
+    isRedirect: PropTypes.bool.isRequired
 };
 
 export default Auth;

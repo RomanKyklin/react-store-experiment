@@ -8,6 +8,7 @@ const mapStateToProps = (state, ownProps) => {
         title: state.categoryReducer.title,
         isError: state.categoryReducer.isError,
         errorMessage: state.categoryReducer.errorMessage,
+        isRedirect: state.categoryReducer.isRedirect
     }
 };
 

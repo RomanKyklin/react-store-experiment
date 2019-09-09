@@ -1,6 +1,6 @@
 import {
     SET_CATEGORY,
-    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_IS_AUTH, SET_LOADING, SET_PAGE, SET_PER_PAGE,
+    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_IS_AUTH, SET_IS_REDIRECT, SET_LOADING, SET_PAGE, SET_PER_PAGE,
     SET_PRODUCTS, SET_PRODUCTS_COUNT,
 } from "../constants/action-types";
 import axios from "axios";
@@ -36,6 +36,8 @@ export const setPerPage = makeActionCreator(SET_PER_PAGE, 'perPage');
 export const setIsAuth = makeActionCreator(SET_IS_AUTH, 'isAuth');
 
 export const setFilteredCategoryId = makeActionCreator(SET_FILTERED_CATEGORY_ID, 'filteredCategoryId');
+
+export const setIsRedirect = makeActionCreator(SET_IS_REDIRECT, 'isRedirect');
 
 export const fetchCategories = () => dispatch => {
     dispatch(setLoading(true));
@@ -86,9 +88,12 @@ export const createCategory = (title) => dispatch => {
 
     return axios.post(GET_OR_ADD_OR_DELETE_CATEGORIES_URL, {title})
         .then(response => {
-            window.location.href = HOME_URL;
+            dispatch(setIsRedirect(true));
         })
-        .then(() => dispatch(setLoading(false)))
+        .then(() => {
+            dispatch(setIsRedirect(false));
+            dispatch(setLoading(false))
+        })
         .catch(error => {
             console.log(error);
             dispatch(setError(true, 'Произошла ошибка. Поля заполнены неккоректно, либо попробуйте перезагрузить страницу или интернет.'));
@@ -102,9 +107,12 @@ export const createProduct = (title, sellingPrice, purchasePrice, categoryId) =>
         title, sellingPrice, purchasePrice, category: categoryId
     })
         .then(response => {
-            window.location.href = HOME_URL;
+            dispatch(setIsRedirect(true));
         })
-        .then(() => dispatch(setLoading(false)))
+        .then(() => {
+            dispatch(setIsRedirect(false));
+            dispatch(setLoading(false))
+        })
         .catch(error => {
             console.log(error);
             store.dispatch(setError(true, 'Произошла ошибка, попробуйте повторить позже'));
@@ -121,9 +129,13 @@ export const updateProduct = (productIdToChange, title, sellingPrice, purchasePr
         purchasePrice,
         category: categoryId
     })
+        .then(response => {
+            dispatch(fetchProducts());
+            dispatch(setIsRedirect(true));
+        })
         .then(() => {
+            dispatch(setIsRedirect(false));
             dispatch(setLoading(false));
-            window.location.href = HOME_URL;
         })
         .catch(err => {
             dispatch(setLoading(false));
@@ -138,9 +150,14 @@ export const deleteCategory = (id, title) => dispatch => {
         dispatch(setLoading(true));
         return axios.delete(GET_OR_ADD_OR_DELETE_CATEGORIES_URL, {data: {id}})
             .then(res => {
-                window.location.href = HOME_URL;
+                dispatch(setIsRedirect(true));
+                dispatch(fetchProducts());
+                dispatch(fetchCategories());
             })
-            .then(() => dispatch(setLoading(false)))
+            .then(() => {
+                dispatch(setIsRedirect(false));
+                dispatch(setLoading(false))
+            })
             .catch(err => {
                 console.log(err);
                 dispatch(setLoading(false));
@@ -156,9 +173,13 @@ export const deleteProduct = (id, title) => dispatch => {
         dispatch(setLoading(true));
         return axios.delete(GET_OR_DELETE_PRODUCT_URL, {data: {id}})
             .then(response => {
-                window.location.href = HOME_URL;
+                dispatch(setIsRedirect(true));
+                dispatch(fetchProducts())
             })
-            .then(() => setLoading(false))
+            .then(() => {
+                dispatch(setIsRedirect(false));
+                dispatch(setLoading(false));
+            })
             .catch(err => {
                 console.log(err);
                 dispatch(setLoading(false));
@@ -180,11 +201,14 @@ export const handleAuthForm = (username, password, event) => dispatch => {
     event.preventDefault();
     dispatch(setLoading(true));
     axios.post('/login', {username, password})
-        .then(response => {
+        .then(() => {
             dispatch(setIsAuth(true));
-            window.location.href = HOME_URL;
+            dispatch(setIsRedirect(true))
         })
-        .then(() => dispatch(setLoading(false)))
+        .then(() => {
+            dispatch(setIsRedirect(false));
+            dispatch(setLoading(false))
+        })
         .catch(error => {
             dispatch(setError(true, 'Incorrect data!'));
             dispatch(setLoading(false));
@@ -195,7 +219,7 @@ export const handleAuthForm = (username, password, event) => dispatch => {
 export const isAuth = () => dispatch => {
     const isAuth = store.getState().authReducer.isAuth;
 
-    if(!isAuth) {
+    if (!isAuth) {
         dispatch(setError(true, 'You are not authorized!'));
         window.location.href = '/login';
     }

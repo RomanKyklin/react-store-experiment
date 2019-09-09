@@ -10,7 +10,8 @@ const mapStateToProps = (state, ownProps) => {
         productsCount: state.productReducer.productsCount,
         perPage: state.productReducer.perPage,
         filteredCategoryId: state.productReducer.filteredCategoryId,
-        page: state.productReducer.page
+        page: state.productReducer.page,
+        isRedirect: state.productReducer.isRedirect
     }
 };
 

@@ -8,6 +8,7 @@ const mapStateToProps = (state, ownProps) => {
         isError: state.authReducer.isError,
         errorMessage: state.authReducer.errorMessage,
         isLoading: state.authReducer.isLoading,
+        isRedirect: state.authReducer.isRedirect
     }
 };
 

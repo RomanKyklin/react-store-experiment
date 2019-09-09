@@ -2,20 +2,26 @@ import React, {useState} from "react";
 import {Modal, Button, Input, Select} from 'antd';
 import PropTypes from 'prop-types';
 import {
-    handleChangeCategory, handleChangeField, handleVisible
+    handleChangeCategory, handleChangeField, handleVisible, redirect
 } from "../containers/Forms";
+import {HOME_URL} from "../constants/app-contants";
+import Home from "./Home";
 
 const {Option} = Select;
 
 const ChangeProductModal = ({
                                 id, isLoading, isError, categories, handleOk, initialTitle, initialSellingPrice,
-                                initialPurchasePrice, initialCategoryId
+                                initialPurchasePrice, initialCategoryId, isRedirect
                             }) => {
     const [title, setTitle] = useState(initialTitle);
     const [sellingPrice, setSellingPrice] = useState(initialSellingPrice);
     const [purchasePrice, setPurchasePrice] = useState(initialPurchasePrice);
     const [categoryId, setCategoryId] = useState(initialCategoryId);
     const [visible, setVisible] = useState(false);
+
+    if(isRedirect) {
+        return redirect(HOME_URL, HOME_URL, Home);
+    }
 
     if (!isLoading) {
         return (
@@ -61,6 +67,7 @@ ChangeProductModal.propTypes = {
     isError: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string.isRequired,
     handleOk: PropTypes.func.isRequired,
+    isRedirect: PropTypes.bool.isRequired
 };
 
 export default ChangeProductModal;

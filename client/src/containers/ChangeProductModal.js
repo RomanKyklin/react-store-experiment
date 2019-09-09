@@ -15,6 +15,7 @@ const mapStateToProps = (state, ownProps) => {
         isLoading: state.productReducer.isLoading,
         isError: state.productReducer.isError,
         errorMessage: state.productReducer.errorMessage,
+        isRedirect: state.productReducer.isRedirect
     }
 };
 

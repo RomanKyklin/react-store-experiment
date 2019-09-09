@@ -1,5 +1,5 @@
 import {initialState} from "./reducer";
-import {SET_ERROR, SET_IS_AUTH, SET_LOADING} from "../constants/action-types";
+import {SET_ERROR, SET_IS_AUTH, SET_IS_REDIRECT, SET_LOADING} from "../constants/action-types";
 
 
 const authReducer = (state = initialState, action) => {
@@ -19,6 +19,11 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isAuth: action.isAuth
+            };
+        case SET_IS_REDIRECT:
+            return {
+                ...state,
+                isRedirect: action.isRedirect
             };
         default:
             return {

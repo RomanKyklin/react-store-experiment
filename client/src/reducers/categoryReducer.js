@@ -1,7 +1,7 @@
 import {initialState} from "./reducer";
 import {
     SET_CATEGORY,
-    SET_ERROR, SET_LOADING, SET_PRODUCT,
+    SET_ERROR, SET_IS_REDIRECT, SET_LOADING, SET_PRODUCT,
     SET_PRODUCTS,
 } from "../constants/action-types";
 
@@ -32,6 +32,11 @@ const categoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 product: action.product
+            };
+        case SET_IS_REDIRECT:
+            return {
+                ...state,
+                isRedirect: action.isRedirect
             };
         default:
             return {
