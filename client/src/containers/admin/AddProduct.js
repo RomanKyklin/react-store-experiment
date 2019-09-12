@@ -1,9 +1,9 @@
 import {connect} from "react-redux";
-import AddProduct from "../components/admin/AddProduct";
+import AddProduct from "../../components/admin/AddProduct";
 import {
     createProduct,
     setError,
-} from "../actions";
+} from "../../actions";
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -11,24 +11,20 @@ const mapStateToProps = (state, ownProps) => {
         isError: state.productReducer.isError,
         errorMessage: state.productReducer.errorMessage,
         isLoading: state.productReducer.isLoading,
-        title: state.productReducer.title,
-        sellingPrice: state.productReducer.sellingPrice,
-        purchasePrice: state.productReducer.purchasePrice,
-        categoryId: state.productReducer.categoryId,
         isRedirect: state.productReducer.isRedirect
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleForm: (event, title, sellingPrice, purchasePrice, categoryId) => {
+        handleForm: (event, title, sellingPrice, purchasePrice, categoryId, image) => {
             event.preventDefault();
             if (title.trim().length === 0 || sellingPrice.trim().length === 0 || purchasePrice.trim().length === 0
-                || categoryId.trim().length === 0) {
+                || categoryId.trim().length === 0 || image.trim().length === 0) {
                 dispatch(setError(true, 'Поля заполнены некорректно.'));
                 return;
             }
-            dispatch(createProduct(title, sellingPrice, purchasePrice, categoryId));
+            dispatch(createProduct(title, sellingPrice, purchasePrice, categoryId, image));
         }
     }
 };

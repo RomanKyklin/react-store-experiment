@@ -5,8 +5,8 @@ import {fetchCategories, isAuth} from "../../actions";
 import {useDispatch} from "react-redux";
 import {
     handleChangeCategory, handleChangeField,
-} from "../../containers/Forms";
-import {redirect} from "../../containers/Forms";
+} from "../../containers/admin/Forms";
+import {redirect} from "../../containers/admin/Forms";
 import Home from "./Home";
 import {ADD_PRODUCT_CLIENT_URL, HOME_URL} from "../../constants/app-contants";
 
@@ -27,6 +27,7 @@ const AddProduct = ({
     const [sellingPrice, setSellingPrice] = useState('');
     const [purchasePrice, setPurchasePrice] = useState('');
     const [categoryId, setCategoryId] = useState('');
+    const [image, setImage] = useState('');
 
     useEffect(() => {
         dispatch(isAuth());
@@ -51,7 +52,7 @@ const AddProduct = ({
         <Row type="flex" justify="center">
             <Col style={{textAlign: "center"}} span={13}>
                 <Form className="create-product-form"
-                      onSubmit={(event) => handleForm(event, title, sellingPrice, purchasePrice, categoryId)}>
+                      onSubmit={(event) => handleForm(event, title, sellingPrice, purchasePrice, categoryId, image)}>
                     <Form.Item>
                         <Input
                             placeholder="title"
@@ -70,6 +71,12 @@ const AddProduct = ({
                             type="number"
                             placeholder="purchase_price"
                             onChange={handleChangeField(setPurchasePrice)}
+                        />
+                    </Form.Item>
+                    <Form.Item>
+                        <Input
+                            placeholder="image"
+                            onChange={handleChangeField(setImage)}
                         />
                     </Form.Item>
                     <Form.Item>
@@ -99,10 +106,6 @@ AddProduct.propTypes = {
     isError: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
-    title: PropTypes.string,
-    sellingPrice: PropTypes.string,
-    purchasePrice: PropTypes.string,
-    categoryId: PropTypes.string,
     handleForm: PropTypes.func.isRequired,
     isRedirect: PropTypes.bool.isRequired
 

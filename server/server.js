@@ -60,6 +60,8 @@ app.use(express.static(path.join(__dirname, process.env.build_path), {
     index: false
 }));
 
+app.get('/product*', renderIndexHTML);
+
 app.get('*', isLoggedIn, renderIndexHTML);
 
 app.use((req, res, next) => {

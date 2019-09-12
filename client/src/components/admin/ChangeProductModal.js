@@ -3,7 +3,7 @@ import {Modal, Button, Input, Select} from 'antd';
 import PropTypes from 'prop-types';
 import {
     handleChangeCategory, handleChangeField, handleVisible, redirect
-} from "../../containers/Forms";
+} from "../../containers/admin/Forms";
 import {HOME_URL} from "../../constants/app-contants";
 import Home from "./Home";
 
@@ -11,13 +11,14 @@ const {Option} = Select;
 
 const ChangeProductModal = ({
                                 id, isLoading, isError, categories, handleOk, initialTitle, initialSellingPrice,
-                                initialPurchasePrice, initialCategoryId, isRedirect
+                                initialPurchasePrice, initialCategoryId, isRedirect, initialImage
                             }) => {
     const [title, setTitle] = useState(initialTitle);
     const [sellingPrice, setSellingPrice] = useState(initialSellingPrice);
     const [purchasePrice, setPurchasePrice] = useState(initialPurchasePrice);
     const [categoryId, setCategoryId] = useState(initialCategoryId);
     const [visible, setVisible] = useState(false);
+    const [image, setImage] = useState(initialImage);
 
     if(isRedirect) {
         return redirect(HOME_URL, HOME_URL, Home);
@@ -32,7 +33,7 @@ const ChangeProductModal = ({
                 <Modal
                     visible={visible}
                     title="Change product"
-                    onOk={() => handleOk(id, title, sellingPrice, purchasePrice, categoryId)}
+                    onOk={() => handleOk(id, title, sellingPrice, purchasePrice, categoryId, image)}
                     onCancel={() => handleVisible(!visible, setVisible)}
                 >
                     <Input placeholder="Title" defaultValue={title}
@@ -41,6 +42,8 @@ const ChangeProductModal = ({
                            onChange={handleChangeField(setSellingPrice)}/>
                     <Input placeholder="Purchase price" defaultValue={purchasePrice}
                            onChange={handleChangeField(setPurchasePrice)}/>
+                    <Input placeholder="Image" defaultValue={image}
+                           onChange={handleChangeField(setImage)}/>
                     <Select style={{width: 120}} onChange={(id) => handleChangeCategory(id, setCategoryId)}
                             defaultValue={categoryId}>
                         {categories.map(category => {
@@ -67,7 +70,8 @@ ChangeProductModal.propTypes = {
     isError: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string.isRequired,
     handleOk: PropTypes.func.isRequired,
-    isRedirect: PropTypes.bool.isRequired
+    isRedirect: PropTypes.bool.isRequired,
+    initialImage: PropTypes.string.isRequired
 };
 
 export default ChangeProductModal;

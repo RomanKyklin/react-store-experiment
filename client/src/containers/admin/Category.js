@@ -1,5 +1,5 @@
-import Category from "../components/admin/Category";
-import {deleteCategory, fetchProductsByCategory, setFilteredCategoryId} from "../actions";
+import Category from "../../components/admin/Category";
+import {deleteCategory, fetchProductsByCategory, setFilteredCategoryId} from "../../actions";
 import {connect} from "react-redux";
 
 const mapStateToProps = (state, ownProps) => {

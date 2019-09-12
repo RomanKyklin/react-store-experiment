@@ -3,11 +3,8 @@ import {Col, Row, Table, Spin, Pagination} from "antd";
 import {fetchProducts} from "../../actions";
 import {useDispatch} from "react-redux";
 import PropTypes from 'prop-types';
-import ChangeProductModal from "../../containers/ChangeProductModal";
+import ChangeProductModal from "../../containers/admin/ChangeProductModal";
 import Button from "antd/es/button";
-import {redirect} from "../../containers/Forms";
-import {HOME_URL} from "../../constants/app-contants";
-import Home from "./Home";
 
 const Product = ({products, isLoading, handleDelete, productsCount, perPage, page, handlePageChange, filteredCategoryId, isRedirect}) => {
 
@@ -43,7 +40,8 @@ const Product = ({products, isLoading, handleDelete, productsCount, perPage, pag
          <ChangeProductModal id={text._id} initialPurchasePrice={text.purchase_price}
                              initialSellingPrice={text.selling_price}
                              initialTitle={text.title}
-                             initialCategoryId={text.category._id}/>
+                             initialCategoryId={text.category._id}
+                             initialImage={text.image}/>
          <Button type="danger" onClick={() => handleDelete(text._id, text.title)}> Delete </Button>
       </span>
                 )

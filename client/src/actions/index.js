@@ -1,6 +1,6 @@
 import {
     SET_CATEGORY,
-    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_IS_AUTH, SET_IS_REDIRECT, SET_LOADING, SET_PAGE, SET_PER_PAGE,
+    SET_ERROR, SET_FILTERED_CATEGORY_ID, SET_IS_AUTH, SET_IS_REDIRECT, SET_LOADING, SET_PAGE, SET_PER_PAGE, SET_PRODUCT,
     SET_PRODUCTS, SET_PRODUCTS_COUNT,
 } from "../constants/action-types";
 import axios from "axios";
@@ -38,6 +38,8 @@ export const setIsAuth = makeActionCreator(SET_IS_AUTH, 'isAuth');
 export const setFilteredCategoryId = makeActionCreator(SET_FILTERED_CATEGORY_ID, 'filteredCategoryId');
 
 export const setIsRedirect = makeActionCreator(SET_IS_REDIRECT, 'isRedirect');
+
+export const setProduct = makeActionCreator(SET_PRODUCT, 'product');
 
 export const fetchCategories = () => dispatch => {
     dispatch(setLoading(true));
@@ -100,11 +102,11 @@ export const createCategory = (title) => dispatch => {
         })
 };
 
-export const createProduct = (title, sellingPrice, purchasePrice, categoryId) => dispatch => {
+export const createProduct = (title, sellingPrice, purchasePrice, categoryId, image) => dispatch => {
     dispatch(setLoading(true));
 
     return axios.post(GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL, {
-        title, sellingPrice, purchasePrice, category: categoryId
+        title, sellingPrice, purchasePrice, category: categoryId, image
     })
         .then(response => {
             dispatch(setIsRedirect(true));
@@ -119,7 +121,7 @@ export const createProduct = (title, sellingPrice, purchasePrice, categoryId) =>
         });
 };
 
-export const updateProduct = (productIdToChange, title, sellingPrice, purchasePrice, categoryId) => dispatch => {
+export const updateProduct = (productIdToChange, title, sellingPrice, purchasePrice, categoryId, image) => dispatch => {
     dispatch(setLoading(true));
 
     return axios.put(GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL, {
@@ -127,7 +129,8 @@ export const updateProduct = (productIdToChange, title, sellingPrice, purchasePr
         title,
         sellingPrice,
         purchasePrice,
-        category: categoryId
+        category: categoryId,
+        image
     })
         .then(response => {
             dispatch(fetchProducts());
@@ -191,6 +194,26 @@ export const deleteProduct = (id, title) => dispatch => {
 export const fetchProductsByCategory = (id) => dispatch => {
     dispatch(setLoading(true));
     dispatch(fetchProducts(10, 1, id));
+};
+
+export const fetchProductById = id => dispatch => {
+    dispatch(setLoading(true));
+
+    axios.get(GET_OR_DELETE_PRODUCT_URL, {params: {id}})
+        .then(response => {
+            const product = _.get(response, 'data', null);
+
+            if (!_.isObject(product)) {
+                dispatch(setError(true, 'Призошла ошибка. Попробуйте перезагрузить страницу или интренет.'));
+                return;
+            }
+            dispatch(setProduct(product));
+        })
+        .then(() => dispatch(setLoading(false)))
+        .catch(err => {
+            dispatch(setError(true, 'Призошла ошибка. Попробуйте перезагрузить страницу или интренет.'));
+            dispatch(setLoading(false));
+        })
 };
 
 export const handlePageChange = (page, pageSize, filteredCategoryId) => dispatch => {

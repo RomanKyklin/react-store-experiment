@@ -48,6 +48,7 @@ exports.create = async (req, res) => {
     const sellingPrice = _.get(req.body, 'sellingPrice', null);
     const purchasePrice = _.get(req.body, 'purchasePrice', null);
     const category = _.get(req.body, 'category', null);
+    const image = _.get(req.body, 'image', null);
 
     if (!title || !sellingPrice || !purchasePrice || !category) {
         return res.status(400).send({
@@ -56,7 +57,7 @@ exports.create = async (req, res) => {
     }
 
     try {
-        const product = await productService.createProduct(title, sellingPrice, purchasePrice, category);
+        const product = await productService.createProduct(title, sellingPrice, purchasePrice, category, image);
         return res.send(product);
     } catch (e) {
         return res.status(500).send({
@@ -71,15 +72,16 @@ exports.change = async (req, res) => {
     const sellingPrice = _.get(req.body, 'sellingPrice', null);
     const purchasePrice = _.get(req.body, 'purchasePrice', null);
     const category = _.get(req.body, 'category', null);
+    const image = _.get(req.body, 'image', null);
 
-    if (!id || !title || !sellingPrice || !purchasePrice || !category) {
+    if (!id || !title || !sellingPrice || !purchasePrice || !category || !image) {
         return res.status(400).send({
             message: "Product content can not be empty"
         });
     }
 
     try {
-        const product = await productService.changeProduct(id, title, sellingPrice, purchasePrice, category);
+        const product = await productService.changeProduct(id, title, sellingPrice, purchasePrice, category, image);
         return res.send(product);
     } catch (e) {
         return res.status(500).send({

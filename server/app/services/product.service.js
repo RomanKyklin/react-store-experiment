@@ -48,15 +48,17 @@ exports.getProductsCount = (query = {}) => {
  * @param sellingPrice
  * @param purchasePrice
  * @param category
+ * @param image
  * @returns {*}
  */
-exports.createProduct = (title = null, sellingPrice = null, purchasePrice = null, category = null) => {
+exports.createProduct = (title = null, sellingPrice = null, purchasePrice = null, category = null, image = null) => {
     try {
         const product = new Product({
             title,
             selling_price: sellingPrice,
             purchase_price: purchasePrice,
             category,
+            image
         });
 
         return product.save();
@@ -72,15 +74,17 @@ exports.createProduct = (title = null, sellingPrice = null, purchasePrice = null
  * @param sellingPrice
  * @param purchasePrice
  * @param category
+ * @param image
  * @returns {Query}
  */
-exports.changeProduct = (id, title = null, sellingPrice = null, purchasePrice = null, category = null) => {
+exports.changeProduct = (id, title = null, sellingPrice = null, purchasePrice = null, category = null, image = null) => {
     try {
         return Product.findByIdAndUpdate(id, {
             title,
             selling_price: sellingPrice,
             purchase_price: purchasePrice,
             category,
+            image
         }, {new: true});
     } catch (e) {
         throw Error("Error updating product with id " + id)
