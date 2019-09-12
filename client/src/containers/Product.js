@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import Product from "../components/Product";
+import Product from "../components/admin/Product";
 import {deleteProduct, handlePageChange} from "../actions";
 
 const mapStateToProps = (state, ownProps) => {

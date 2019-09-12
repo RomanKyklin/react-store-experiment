@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 import {Col, Row, Table, Spin, Pagination} from "antd";
-import {fetchProducts} from "../actions";
+import {fetchProducts} from "../../actions";
 import {useDispatch} from "react-redux";
 import PropTypes from 'prop-types';
-import ChangeProductModal from "../containers/ChangeProductModal";
+import ChangeProductModal from "../../containers/ChangeProductModal";
 import Button from "antd/es/button";
-import {redirect} from "../containers/Forms";
-import {HOME_URL} from "../constants/app-contants";
+import {redirect} from "../../containers/Forms";
+import {HOME_URL} from "../../constants/app-contants";
 import Home from "./Home";
 
 const Product = ({products, isLoading, handleDelete, productsCount, perPage, page, handlePageChange, filteredCategoryId, isRedirect}) => {

@@ -1,10 +1,10 @@
 import * as React from "react";
-import Category from "../containers/Category";
+import Category from "../../containers/Category";
 import {Button, Col, Layout, Row} from "antd";
-import Product from "../containers/Product";
+import Product from "../../containers/Product";
 import {Link} from "react-router-dom";
 import {useEffect} from "react";
-import {isAuth} from "../actions";
+import {isAuth} from "../../actions";
 import {useDispatch} from "react-redux";
 
 const {Content} = Layout;

@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import AddProduct from "../components/AddProduct";
+import AddProduct from "../components/admin/AddProduct";
 import {
     createProduct,
     setError,

@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {Form, Input, Button, Col, Row, Select, Alert} from 'antd';
 import PropTypes from 'prop-types';
-import {fetchCategories, isAuth} from "../actions";
+import {fetchCategories, isAuth} from "../../actions";
 import {useDispatch} from "react-redux";
 import {
     handleChangeCategory, handleChangeField,
-} from "../containers/Forms";
-import {redirect} from "../containers/Forms";
+} from "../../containers/Forms";
+import {redirect} from "../../containers/Forms";
 import Home from "./Home";
-import {ADD_PRODUCT_CLIENT_URL, HOME_URL} from "../constants/app-contants";
+import {ADD_PRODUCT_CLIENT_URL, HOME_URL} from "../../constants/app-contants";
 
 const {Option} = Select;
 

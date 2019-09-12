@@ -1,5 +1,5 @@
 import React from "react";
-import Auth from '../components/Auth';
+import Auth from '../components/admin/Auth';
 import {connect} from "react-redux";
 import {handleAuthForm} from "../actions";
 

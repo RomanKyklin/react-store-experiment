@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {Alert, Button, Col, Form, Input, Row} from "antd";
 import PropTypes from "prop-types";
-import {handleChangeField} from "../containers/Forms";
+import {handleChangeField} from "../../containers/Forms";
 import {useDispatch} from "react-redux";
-import {isAuth} from "../actions";
+import {isAuth} from "../../actions";
 import Home from "./Home";
-import {redirect} from "../containers/Forms";
-import {ADD_CATEGORY_CLIENT_URL, HOME_URL} from "../constants/app-contants";
+import {redirect} from "../../containers/Forms";
+import {ADD_CATEGORY_CLIENT_URL, HOME_URL} from "../../constants/app-contants";
 
 const AddCategory = ({isError, errorMessage, handleForm, isRedirect}) => {
     const [title, setTitle] = useState('');

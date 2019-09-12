@@ -1,5 +1,5 @@
 import React from "react";
-import AddCategory from '../components/AddCategory';
+import AddCategory from '../components/admin/AddCategory';
 import {connect} from "react-redux";
 import {createCategory} from "../actions";
 

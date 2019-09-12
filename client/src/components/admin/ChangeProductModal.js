@@ -3,8 +3,8 @@ import {Modal, Button, Input, Select} from 'antd';
 import PropTypes from 'prop-types';
 import {
     handleChangeCategory, handleChangeField, handleVisible, redirect
-} from "../containers/Forms";
-import {HOME_URL} from "../constants/app-contants";
+} from "../../containers/Forms";
+import {HOME_URL} from "../../constants/app-contants";
 import Home from "./Home";
 
 const {Option} = Select;

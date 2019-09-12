@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import ChangeProductModal from "../components/ChangeProductModal";
+import ChangeProductModal from "../components/admin/ChangeProductModal";
 import {
     updateProduct
 } from "../actions";

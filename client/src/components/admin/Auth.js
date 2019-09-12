@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Form, Icon, Input, Button, Row, Col, Alert, Spin} from 'antd';
-import {handleChangeField, redirect} from "../containers/Forms";
+import {handleChangeField, redirect} from "../../containers/Forms";
 import PropTypes from "prop-types";
-import {HOME_URL, LOGIN_URL} from "../constants/app-contants";
+import {HOME_URL, LOGIN_URL} from "../../constants/app-contants";
 import Home from "./Home";
 
 const Auth = ({handleForm, isError, errorMessage, isLoading, isRedirect}) => {

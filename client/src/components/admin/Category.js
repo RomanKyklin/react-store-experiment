@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Menu, Icon} from "antd";
 import Sider from "antd/es/layout/Sider";
-import {fetchCategories} from "../actions";
+import {fetchCategories} from "../../actions";
 import {useDispatch} from "react-redux";
 
 const Category = ({categories, isError, isLoading, handleClick, handleDeleteCategory}) => {

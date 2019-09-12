@@ -1,4 +1,4 @@
-import Category from "../components/Category";
+import Category from "../components/admin/Category";
 import {deleteCategory, fetchProductsByCategory, setFilteredCategoryId} from "../actions";
 import {connect} from "react-redux";
 

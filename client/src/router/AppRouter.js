@@ -1,7 +1,7 @@
 import React from 'react';
 import {BrowserRouter as Router, Redirect, Route} from "react-router-dom"
 import AddProduct from "../containers/AddProduct";
-import Home from "../components/Home";
+import Home from "../components/admin/Home";
 import AddCategory from "../containers/AddCategory";
 import Auth from "../containers/Auth";
 
