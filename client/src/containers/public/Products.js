@@ -10,7 +10,8 @@ const mapStateToProps = (state, ownProps) => {
         isLoading: state.productReducer.isLoading,
         productsCount: state.productReducer.productsCount,
         perPage: state.productReducer.perPage,
-        page: state.productReducer.page
+        page: state.productReducer.page,
+        filteredCategoryId: state.productReducer.filteredCategoryId
     }
 };
 

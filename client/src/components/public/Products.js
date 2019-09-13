@@ -1,18 +1,21 @@
 import React, {useEffect} from 'react';
 import {Alert, Button, Card, Col, Layout, Pagination, Row, Spin} from 'antd';
 import PropTypes from "prop-types";
-import {fetchProducts} from "../../actions";
+import {fetchCategories, fetchProducts} from "../../actions";
 import {useDispatch} from "react-redux";
 import {Link} from "react-router-dom";
+import Category from "../../containers/public/Category";
+import ProductItem from "./ProductItem";
 
 const {Meta} = Card;
 const {Content} = Layout;
 
-const Products = ({products, isLoading, isError, errorMessage, productsCount, perPage, page, handlePageChange}) => {
+const Products = ({products, isLoading, isError, errorMessage, productsCount, perPage, page, handlePageChange, filteredCategoryId}) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchProducts());
+        dispatch(fetchCategories())
     }, []);
 
     if (isError) {
@@ -39,31 +42,19 @@ const Products = ({products, isLoading, isError, errorMessage, productsCount, pe
         <Content>
             <>
                 <Row style={{padding: '15px'}} type="flex" justify="center">
-                    {products.map(product => (
-                        <Col span={8}>
-                            <Card
-                                hoverable
-                                style={{width: 240, margin: "0 auto"}}
-                                cover={
-                                    <a href={product.image}>
-                                        <img alt="example"
-                                             src={product.image}
-                                             style={{height: '250px', width: '100%'}}/>
-                                    </a>
-                                }
-                            >
-                                <Meta title={product.title} style={{textAlign: "center"}}/>
-                                <Button type="primary" style={{display: "block", margin: "10px auto"}}>
-                                    <Link to={"/product/" + product._id}>Details</Link>
-                                </Button>
-                            </Card>
-                        </Col>
-                    ))}
+                    <Col span={4}>
+                        <Category/>
+                    </Col>
+                    <Col span={20}>
+                        {products.map(product => (
+                            <ProductItem product={product}/>
+                        ))}
+                    </Col>
                 </Row>
-                <Row type="flex" justify="center">
+                <Row type="flex" justify="center" style={{padding: "20px"}}>
                     <Col style={{marginTop: "20px", textAlign: "center"}}>
                         <Pagination defaultCurrent={page} total={productsCount} pageSize={perPage}
-                                    onChange={(page, pageSize) => dispatch(handlePageChange(page, pageSize, null))}
+                                    onChange={(page, pageSize) => dispatch(handlePageChange(page, pageSize, filteredCategoryId))}
                                     style={{marginTop: '1%'}}/>
                     </Col>
                 </Row>
@@ -81,6 +72,7 @@ Products.propTypes = {
     page: PropTypes.number.isRequired,
     handlePageChange: PropTypes.func.isRequired,
     productsCount: PropTypes.number.isRequired,
+    filteredCategoryId: PropTypes.string
 };
 
 

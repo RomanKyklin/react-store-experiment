@@ -58,6 +58,7 @@ export const fetchCategories = () => dispatch => {
         .catch(error => {
             console.log(error);
             dispatch(setError(true, 'Произошла ошибка, попробуйте перезагрузить интернет или перезагрузить страницу'));
+            dispatch(setLoading(false));
         });
 };
 
