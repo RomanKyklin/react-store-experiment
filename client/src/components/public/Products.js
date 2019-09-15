@@ -1,13 +1,11 @@
 import React, {useEffect} from 'react';
-import {Alert, Button, Card, Col, Layout, Pagination, Row, Spin} from 'antd';
+import {Alert, Col, Layout, Pagination, Row, Spin} from 'antd';
 import PropTypes from "prop-types";
 import {fetchCategories, fetchProducts} from "../../actions";
 import {useDispatch} from "react-redux";
-import {Link} from "react-router-dom";
 import Category from "../../containers/public/Category";
 import ProductItem from "./ProductItem";
 
-const {Meta} = Card;
 const {Content} = Layout;
 
 const Products = ({products, isLoading, isError, errorMessage, productsCount, perPage, page, handlePageChange, filteredCategoryId}) => {
@@ -54,8 +52,7 @@ const Products = ({products, isLoading, isError, errorMessage, productsCount, pe
                 <Row type="flex" justify="center" style={{padding: "20px"}}>
                     <Col style={{marginTop: "20px", textAlign: "center"}}>
                         <Pagination defaultCurrent={page} total={productsCount} pageSize={perPage}
-                                    onChange={(page, pageSize) => dispatch(handlePageChange(page, pageSize, filteredCategoryId))}
-                                    style={{marginTop: '1%'}}/>
+                                    onChange={(page, pageSize) => dispatch(handlePageChange(page, pageSize, filteredCategoryId))}/>
                     </Col>
                 </Row>
             </>

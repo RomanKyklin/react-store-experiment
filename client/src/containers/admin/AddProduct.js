@@ -4,6 +4,7 @@ import {
     createProduct,
     setError,
 } from "../../actions";
+import {isFieldsNotEmpty} from "./Forms";
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -19,8 +20,7 @@ const mapDispatchToProps = dispatch => {
     return {
         handleForm: (event, title, sellingPrice, purchasePrice, categoryId, image) => {
             event.preventDefault();
-            if (title.trim().length === 0 || sellingPrice.trim().length === 0 || purchasePrice.trim().length === 0
-                || categoryId.trim().length === 0 || image.trim().length === 0) {
+            if (isFieldsNotEmpty(title, title, sellingPrice, purchasePrice, categoryId, image)) {
                 dispatch(setError(true, 'Поля заполнены некорректно.'));
                 return;
             }

@@ -6,8 +6,9 @@ import {
 import axios from "axios";
 import _ from "lodash";
 import {
+    DEFAULT_ERROR_MESSAGE, FIELD_ERROR,
     GET_OR_ADD_OR_DELETE_CATEGORIES_URL, GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL,
-    GET_OR_DELETE_PRODUCT_URL, GET_PRODUCTS_URL, HOME_URL
+    GET_OR_DELETE_PRODUCT_URL, GET_PRODUCTS_URL
 } from "../constants/app-contants";
 import store from "../store/store";
 
@@ -57,7 +58,7 @@ export const fetchCategories = () => dispatch => {
         .then(() => dispatch(setLoading(false)))
         .catch(error => {
             console.log(error);
-            dispatch(setError(true, 'Произошла ошибка, попробуйте перезагрузить интернет или перезагрузить страницу'));
+            dispatch(setError(true, DEFAULT_ERROR_MESSAGE));
             dispatch(setLoading(false));
         });
 };
@@ -90,7 +91,7 @@ export const createCategory = (title) => dispatch => {
     dispatch(setLoading(true));
 
     return axios.post(GET_OR_ADD_OR_DELETE_CATEGORIES_URL, {title})
-        .then(response => {
+        .then(() => {
             dispatch(setIsRedirect(true));
         })
         .then(() => {
@@ -99,7 +100,7 @@ export const createCategory = (title) => dispatch => {
         })
         .catch(error => {
             console.log(error);
-            dispatch(setError(true, 'Произошла ошибка. Поля заполнены неккоректно, либо попробуйте перезагрузить страницу или интернет.'));
+            dispatch(setError(true, FIELD_ERROR));
         })
 };
 
@@ -109,7 +110,7 @@ export const createProduct = (title, sellingPrice, purchasePrice, categoryId, im
     return axios.post(GET_OR_CREATE_OR_UPDATE_PRODUCTS_URL, {
         title, sellingPrice, purchasePrice, category: categoryId, image
     })
-        .then(response => {
+        .then(() => {
             dispatch(setIsRedirect(true));
         })
         .then(() => {
@@ -118,7 +119,7 @@ export const createProduct = (title, sellingPrice, purchasePrice, categoryId, im
         })
         .catch(error => {
             console.log(error);
-            store.dispatch(setError(true, 'Произошла ошибка, попробуйте повторить позже'));
+            store.dispatch(setError(true, DEFAULT_ERROR_MESSAGE));
         });
 };
 
@@ -133,7 +134,7 @@ export const updateProduct = (productIdToChange, title, sellingPrice, purchasePr
         category: categoryId,
         image
     })
-        .then(response => {
+        .then(() => {
             dispatch(fetchProducts());
             dispatch(setIsRedirect(true));
         })
@@ -141,7 +142,7 @@ export const updateProduct = (productIdToChange, title, sellingPrice, purchasePr
             dispatch(setIsRedirect(false));
             dispatch(setLoading(false));
         })
-        .catch(err => {
+        .catch(() => {
             dispatch(setLoading(false));
             dispatch(setError(true, ''));
         })
@@ -153,7 +154,7 @@ export const deleteCategory = (id, title) => dispatch => {
     if (conf) {
         dispatch(setLoading(true));
         return axios.delete(GET_OR_ADD_OR_DELETE_CATEGORIES_URL, {data: {id}})
-            .then(res => {
+            .then(() => {
                 dispatch(setIsRedirect(true));
                 dispatch(fetchProducts());
                 dispatch(fetchCategories());
@@ -176,7 +177,7 @@ export const deleteProduct = (id, title) => dispatch => {
     if (conf) {
         dispatch(setLoading(true));
         return axios.delete(GET_OR_DELETE_PRODUCT_URL, {data: {id}})
-            .then(response => {
+            .then(() => {
                 dispatch(setIsRedirect(true));
                 dispatch(fetchProducts())
             })
@@ -205,14 +206,14 @@ export const fetchProductById = id => dispatch => {
             const product = _.get(response, 'data', null);
 
             if (!_.isObject(product)) {
-                dispatch(setError(true, 'Призошла ошибка. Попробуйте перезагрузить страницу или интренет.'));
+                dispatch(setError(true, DEFAULT_ERROR_MESSAGE));
                 return;
             }
             dispatch(setProduct(product));
         })
         .then(() => dispatch(setLoading(false)))
-        .catch(err => {
-            dispatch(setError(true, 'Призошла ошибка. Попробуйте перезагрузить страницу или интренет.'));
+        .catch(() => {
+            dispatch(setError(true, DEFAULT_ERROR_MESSAGE));
             dispatch(setLoading(false));
         })
 };

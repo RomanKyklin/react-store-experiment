@@ -19,7 +19,7 @@ const ProductItem = ({product}) => {
             >
                 <Meta title={product.title} style={{textAlign: "center"}}/>
                 <Button type="primary" style={{display: "block", margin: "10px auto"}}>
-                    <Link to={"/product/" + product._id}>Details</Link>
+                    <Link to={`/product/${product._id}`}>Details</Link>
                 </Button>
             </Card>
         </Col>

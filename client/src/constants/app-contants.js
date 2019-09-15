@@ -6,3 +6,5 @@ export const LOGIN_URL = '/login';
 export const GET_OR_ADD_OR_DELETE_CATEGORIES_URL = '/api/categories';
 export const GET_PRODUCTS_URL = '/api/products';
 export const GET_OR_DELETE_PRODUCT_URL = '/api/product';
+export const DEFAULT_ERROR_MESSAGE = 'Something were wrong. Try to re-connect or restart internet';
+export const FIELD_ERROR = 'Something were wrong. Fields filled incorrect or try to re-connect or restart internet';
